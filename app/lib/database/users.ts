@@ -7,7 +7,7 @@ export async function hashPassword(password: string): Promise<string> {
   return await bcrypt.hash(password, 10);
 }
 
-export async function parseTags(tags: string): Promise<string[]> {
+export function parseTags(tags: string): string[] {
   const tagArray = tags.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
   return tagArray;
 }

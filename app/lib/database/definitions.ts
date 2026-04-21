@@ -13,3 +13,9 @@ export type Invite = {
   id: string;
   email: string;
 };
+
+export type EmailVerification = {
+  id: string;
+  email: string;
+  code: string;
+};

@@ -7,12 +7,12 @@ export const authConfig = {
     signIn: '/login',
   },
   callbacks: {
-    async authorized({ auth, request: { nextUrl } }) {
+    authorized({ auth, request: { nextUrl } }) {
       if (nextUrl.pathname === '/login' || nextUrl.pathname === '/register') {
         return true;
       }
       if (nextUrl.pathname.startsWith('/admin')) {
-        return await parseTags(auth?.user?.tags || '').then(tags => tags.includes('admin'));
+        return parseTags(auth?.user?.tags || '').includes('admin');
       }
       const isLoggedIn = !!auth?.user;
       return isLoggedIn;

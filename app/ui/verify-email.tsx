@@ -1,18 +1,16 @@
 "use client";
-import { sendInviteEmail } from "@/app/lib/actions/send-invite-email";
-import { useActionState, useState } from "react";
-import { BG_COLOR_PRIMARY, PLACEHOLDER_COLOR_SURFACE_VARIANT, TEXT_COLOR_ON_PRIMARY } from "../constants";
-import { InviteEmailState } from "@/app/lib/actions/send-invite-email";
+import { sendVerifyEmail } from "@/app/lib/actions/send-verify-email";
+import { useActionState } from "react";
+import { BG_COLOR_PRIMARY, TEXT_COLOR_ON_PRIMARY } from "./constants";
+import { VerifyEmailState } from "../lib/actions/send-verify-email";
 
-export function SendInviteEmailForm({recipient: initialRecipient}: {recipient?: string | null}) {
-    const initialState: InviteEmailState = {
-        email: "",
+export function SendVerifyEmailForm() {
+    const initialState: VerifyEmailState = {
         errorMessage: "",
         resultMessage: "",
     };
 
-    const [state, formAction, isPending] = useActionState(sendInviteEmail, initialState);
-    var [recipient, setRecipient] = useState(initialRecipient || "");
+    const [state, formAction, isPending] = useActionState(sendVerifyEmail, initialState);
     const {errorMessage, resultMessage} = state || {};
 
     return (
@@ -20,15 +18,6 @@ export function SendInviteEmailForm({recipient: initialRecipient}: {recipient?: 
             <div
                 className="flex items-center justify-center gap-4"
             >
-                <input 
-                    className={`peer block rounded-md border border-gray-400 p-[9px] text-sm ${PLACEHOLDER_COLOR_SURFACE_VARIANT}`}
-                    type="email"
-                    name="recipient"
-                    value={recipient}
-                    placeholder="Email"
-                    onChange={(e) => setRecipient(e.target.value)}
-                    required
-                />
                 <button
                     type="submit"
                     className={`
@@ -40,7 +29,7 @@ export function SendInviteEmailForm({recipient: initialRecipient}: {recipient?: 
                     aria-disabled={isPending}
                     disabled={isPending}
                 >
-                Senden
+                Code senden
                 </button>
             </div>
             <div

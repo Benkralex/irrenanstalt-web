@@ -13,6 +13,12 @@ model invites {
   email String @unique
 }
 
+model emailVerification {
+  id    String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  email String @unique
+  code  String @db.VarChar(255) @unique
+}
+
 model users {
   id            String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   username      String  @db.VarChar(255) @unique

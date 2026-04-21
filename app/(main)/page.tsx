@@ -1,6 +1,8 @@
 import { auth } from "@/auth"
 import type { Metadata } from "next";
 import { BG_COLOR_SURFACE, Greeting, GREETING_TEXTS, TEXT_COLOR_ON_SURFACE } from "../ui/constants";
+import { SendVerifyEmailForm } from "../ui/verify-email";
+import { isEmailVerified } from "../lib/database/email-verify";
 
 export const metadata: Metadata = {
   title: "Startseite",
@@ -9,6 +11,7 @@ export const metadata: Metadata = {
 export default async function Home() {
   const session = await auth()
   const username = session?.user.username
+  const emailVerified = session?.user.emailVerified ? true : await isEmailVerified(session?.user.email || "")
   const tags = session?.user.tags?.split(",") || []
 
   const greeting = getRandomGreeting(username, tags);
@@ -21,6 +24,9 @@ export default async function Home() {
     `}>
       <h1 className="text-3xl font-bold mb-8">Startseite</h1>
       <p dangerouslySetInnerHTML={{ __html: greeting }} />
+      {!emailVerified && (
+        <SendVerifyEmailForm />
+      )}
     </main>
   );
 }

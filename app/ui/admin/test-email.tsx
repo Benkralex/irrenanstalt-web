@@ -35,6 +35,8 @@ export function SendTestEmailForm({recipient: initialRecipient}: {recipient?: st
                         aria-disabled:cursor-not-allowed aria-disabled:opacity-50
                         transition-colors ${BG_COLOR_PRIMARY} ${TEXT_COLOR_ON_PRIMARY}
                     `}
+                    aria-disabled={isPending}
+                    disabled={isPending}
                 >
                 Senden
                 </button>
