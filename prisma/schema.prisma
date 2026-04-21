@@ -1,0 +1,25 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model invites {
+  id    String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  email String @unique
+}
+
+model users {
+  id            String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  username      String  @db.VarChar(255) @unique
+  fullname      String  @db.VarChar(255)
+  description   String  @db.Text @default("")
+  email         String  @unique
+  emailVerified Boolean @default(false)
+  tags          String  @db.Text @default("")
+  password      String  @db.VarChar(255)
+}

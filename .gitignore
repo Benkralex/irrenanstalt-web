@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local database files
+irrenanstalt-web-db-data/
+
+/app/generated/
+.vscode/
