@@ -8,8 +8,25 @@ export const authConfig = {
   },
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
-      if (nextUrl.pathname === '/login' || nextUrl.pathname === '/register') {
+      if (nextUrl.pathname.endsWith('.css')) {
         return true;
+      }
+      if (
+        nextUrl.pathname === '/login' || 
+        nextUrl.pathname === '/register' || 
+        nextUrl.pathname === '/terms-of-service' || 
+        (
+          nextUrl.pathname !== '/verify-email/verify' && 
+          nextUrl.pathname.startsWith('/verify-email')
+        )
+      ) {
+        return true;
+      }
+      if (nextUrl.pathname.startsWith('/verify-email')) {
+        return !!auth?.user;
+      }
+      if (auth?.user?.emailVerified === false) {
+        return false;
       }
       if (nextUrl.pathname.startsWith('/admin')) {
         return parseTags(auth?.user?.tags || '').includes('admin');
