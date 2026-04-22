@@ -8,6 +8,39 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model events {
+  id              String     @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  title           String     @db.VarChar(255)
+  description     String     @db.Text
+  location        String     @db.VarChar(255)
+  locationOptions String[]
+  date            DateTime
+  dateOptions     DateTime[]
+  tags            String     @default("") @db.Text
+  creatorId       String     @db.Uuid
+
+  creator        users            @relation(fields: [creatorId], references: [id])
+  eventResponses eventResponses[]
+}
+
+enum ResponseStatus {
+  GOING
+  NOT_GOING
+  MAYBE
+  READ_NOT_ANSWERED
+  NOT_READ
+}
+
+model eventResponses {
+  id      String         @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  eventId String         @db.Uuid
+  userId  String         @db.Uuid
+  status  ResponseStatus @default(NOT_READ)
+
+  event events @relation(fields: [eventId], references: [id])
+  user  users  @relation(fields: [userId], references: [id])
+}
+
 model invites {
   id    String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   email String @unique
@@ -16,16 +49,18 @@ model invites {
 model emailVerification {
   id    String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   email String @unique
-  code  String @db.VarChar(255) @unique
+  code  String @unique @db.VarChar(255)
 }
 
 model users {
-  id            String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  username      String  @db.VarChar(255) @unique
-  fullname      String  @db.VarChar(255)
-  description   String  @db.Text @default("")
-  email         String  @unique
-  emailVerified Boolean @default(false)
-  tags          String  @db.Text @default("")
-  password      String  @db.VarChar(255)
+  id             String           @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  username       String           @unique @db.VarChar(255)
+  fullname       String           @db.VarChar(255)
+  description    String           @default("") @db.Text
+  email          String           @unique
+  emailVerified  Boolean          @default(false)
+  tags           String           @default("") @db.Text
+  password       String           @db.VarChar(255)
+  events         events[]
+  eventResponses eventResponses[]
 }
