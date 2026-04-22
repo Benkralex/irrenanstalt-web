@@ -11,9 +11,18 @@ export async function addInvite(email: string): Promise<Invite> {
 }
 
 export async function getInviteById(id: string): Promise<Invite | null> {
-  return await prisma.invites.findUnique({
-    where: { id },
-  });
+  if (id.length !== 32) {
+    console.warn(`Invalid invite ID format: ${id}`);
+    return null;
+  }
+  try {
+    return await prisma.invites.findUniqueOrThrow({
+      where: { id },
+    });
+  } catch (error) {
+    console.error("Error fetching invite by ID:", error);
+    return null;
+  }
 }
 
 export async function deleteInviteById(id: string) {

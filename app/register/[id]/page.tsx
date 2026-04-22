@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { BG_COLOR_SURFACE, TEXT_COLOR_ON_SURFACE } from "@/app/ui/constants";
 import RegisterForm from "@/app/ui/register-form";
+import { auth } from "@/auth";
+import { isEmailVerified } from "@/app/lib/database/email-verify";
+import { redirect } from "next/navigation";
+import { getInviteById } from "@/app/lib/database/invites";
 
 export const metadata: Metadata = {
   title: "Registrieren",
@@ -9,6 +13,19 @@ export const metadata: Metadata = {
 export default async function Register(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
   const id = params.id;
+  const session = await auth();
+  if (session?.user.email) {
+    const checkEmailVerified = session?.user.emailVerified ? true : await isEmailVerified(session?.user.email);
+    if (checkEmailVerified) {
+      redirect("/");
+    } else {
+      redirect("/verify-email/verify");
+    }
+  }
+  const invite = await getInviteById(id);
+  if (!invite) {
+    redirect("/register/failed");
+  }
 
   return (
     <main className={`
