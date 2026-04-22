@@ -1,7 +1,7 @@
 "use client";
 import { sendInviteEmail } from "@/app/lib/actions/send-invite-email";
 import { useActionState, useState } from "react";
-import { BG_COLOR_PRIMARY, PLACEHOLDER_COLOR_SURFACE_VARIANT, TEXT_COLOR_ON_PRIMARY } from "../constants";
+import { BG_COLOR_PRIMARY, BORDER_COLOR_SURFACE_VARIANT, PLACEHOLDER_COLOR_SURFACE_VARIANT, TEXT_COLOR_ON_PRIMARY } from "../constants";
 import { InviteEmailState } from "@/app/lib/actions/send-invite-email";
 
 export function SendInviteEmailForm({recipient: initialRecipient}: {recipient?: string | null}) {
@@ -21,7 +21,7 @@ export function SendInviteEmailForm({recipient: initialRecipient}: {recipient?: 
                 className="flex items-center justify-center gap-4"
             >
                 <input 
-                    className={`peer block rounded-md border border-gray-400 p-[9px] text-sm ${PLACEHOLDER_COLOR_SURFACE_VARIANT}`}
+                    className={`peer block rounded-md border ${BORDER_COLOR_SURFACE_VARIANT} p-[9px] text-sm ${PLACEHOLDER_COLOR_SURFACE_VARIANT}`}
                     type="email"
                     name="recipient"
                     value={recipient}

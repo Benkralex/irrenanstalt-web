@@ -3,7 +3,7 @@
 import { useActionState } from 'react';
 import { authenticate } from '@/app/lib/actions/authentication';
 import { useSearchParams } from 'next/navigation';
-import { TEXT_COLOR_ON_SURFACE_VARIANT, PLACEHOLDER_COLOR_SURFACE_VARIANT, BG_COLOR_PRIMARY, TEXT_COLOR_ON_PRIMARY } from './constants';
+import { TEXT_COLOR_ON_SURFACE_VARIANT, PLACEHOLDER_COLOR_SURFACE_VARIANT, BG_COLOR_PRIMARY, TEXT_COLOR_ON_PRIMARY, BORDER_COLOR_SURFACE_VARIANT } from './constants';
 
 export default function LoginForm() {
   const searchParams = useSearchParams();
@@ -18,7 +18,7 @@ export default function LoginForm() {
     <form action={formAction}>
         <div>
           <input
-            className={`peer block rounded-md border border-gray-400 p-[9px] text-sm ${PLACEHOLDER_COLOR_SURFACE_VARIANT}`}
+            className={`peer block rounded-md border ${BORDER_COLOR_SURFACE_VARIANT} p-[9px] text-sm ${PLACEHOLDER_COLOR_SURFACE_VARIANT}`}
             id="email"
             type="email"
             name="email"
@@ -29,7 +29,7 @@ export default function LoginForm() {
         </div>
         <div className="mt-4">
           <input
-            className={`peer block rounded-md border border-gray-400 p-[9px] text-sm ${PLACEHOLDER_COLOR_SURFACE_VARIANT}`}
+            className={`peer block rounded-md border ${BORDER_COLOR_SURFACE_VARIANT} p-[9px] text-sm ${PLACEHOLDER_COLOR_SURFACE_VARIANT}`}
             id="password"
             type="password"
             name="password"
@@ -39,7 +39,7 @@ export default function LoginForm() {
         </div>
         <input type="hidden" name="redirectTo" value={callbackUrl} />
         <div
-          className="flex justify-center items-center mt-4"
+          className="flex flex-col justify-center items-center mt-4"
           aria-live="polite"
           aria-atomic="true"
         >

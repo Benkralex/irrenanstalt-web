@@ -19,6 +19,7 @@ export async function Navbar() {
           { username === "Admin" && (
             <li><a href="/admin">Admin Dashboard</a></li>
           )}
+          <li><a href="/profile">Profil</a></li>
           <li>
             <form
               action={async () => {

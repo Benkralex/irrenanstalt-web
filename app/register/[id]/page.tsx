@@ -5,6 +5,7 @@ import { auth } from "@/auth";
 import { isEmailVerified } from "@/app/lib/database/email-verify";
 import { redirect } from "next/navigation";
 import { getInviteById } from "@/app/lib/database/invites";
+import { getPasswordRequirementsMessage, getPasswordRequirementsRegex } from "@/app/lib/check-password-requirements";
 
 export const metadata: Metadata = {
   title: "Registrieren",
@@ -14,6 +15,8 @@ export default async function Register(props: { params: Promise<{ id: string }> 
   const params = await props.params;
   const id = params.id;
   const session = await auth();
+  const passwordPattern = getPasswordRequirementsRegex().source;
+  const passwordTitle = getPasswordRequirementsMessage();
   if (session?.user.email) {
     const checkEmailVerified = session?.user.emailVerified ? true : await isEmailVerified(session?.user.email);
     if (checkEmailVerified) {
@@ -35,7 +38,7 @@ export default async function Register(props: { params: Promise<{ id: string }> 
     `}>
       <h1 className="text-3xl font-bold mb-8">Registrieren</h1>
       <p>Registrieren mit ID: {id}</p>
-      <RegisterForm idParam={id}/>
+      <RegisterForm idParam={id} passwordPattern={passwordPattern} passwordTitle={passwordTitle} />
     </main>
   );
 }

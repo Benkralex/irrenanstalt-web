@@ -3,9 +3,20 @@
 import { useActionState, useState } from 'react';
 import { register } from '@/app/lib/actions/authentication';
 import { useSearchParams } from 'next/navigation';
-import { TEXT_COLOR_ON_SURFACE_VARIANT, PLACEHOLDER_COLOR_SURFACE_VARIANT, BG_COLOR_PRIMARY, TEXT_COLOR_ON_PRIMARY } from './constants';
+import { TEXT_COLOR_ON_SURFACE_VARIANT, PLACEHOLDER_COLOR_SURFACE_VARIANT, BG_COLOR_PRIMARY, TEXT_COLOR_ON_PRIMARY, BORDER_COLOR_SURFACE_VARIANT } from './constants';
 
-export default function RegisterForm({ idParam }: { idParam: string }) {
+type RegisterFormProps = {
+  idParam: string;
+  passwordPattern: string;
+  passwordTitle: string;
+};
+
+const fullnamePattern = /^(.*?\S.*){6,}$/;
+const fullnameTitle = 'Name muss min 6 Zeichen lang sein';
+const usernamePattern = /^.*?\S.*$/;
+const usernameTitle = 'Benutzername darf nicht leer sein';
+
+export default function RegisterForm({ idParam, passwordPattern, passwordTitle }: RegisterFormProps) {
   const id = idParam;
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl') || '/';
@@ -22,7 +33,7 @@ export default function RegisterForm({ idParam }: { idParam: string }) {
     <form action={formAction}>
         <div>
           <input
-            className={`peer block rounded-md border border-gray-400 p-[9px] text-sm ${PLACEHOLDER_COLOR_SURFACE_VARIANT}`}
+            className={`peer block rounded-md border ${BORDER_COLOR_SURFACE_VARIANT} p-[9px] text-sm ${PLACEHOLDER_COLOR_SURFACE_VARIANT}`}
             id="email"
             type="email"
             name="email"
@@ -33,39 +44,39 @@ export default function RegisterForm({ idParam }: { idParam: string }) {
         </div>
         <div className="mt-4">
           <input
-            className={`peer block rounded-md border border-gray-400 p-[9px] text-sm ${PLACEHOLDER_COLOR_SURFACE_VARIANT}`}
+            className={`peer block rounded-md border ${BORDER_COLOR_SURFACE_VARIANT} p-[9px] text-sm ${PLACEHOLDER_COLOR_SURFACE_VARIANT}`}
             id="fullname"
             type="text"
             name="fullname"
             placeholder="Voller Name"
             defaultValue={fullname}
-            pattern='^(.*?\S.*){6,}$'
-            title='Name muss min 6 Zeichen lang sein'
+            pattern={fullnamePattern.source}
+            title={fullnameTitle}
             required
           />
         </div>
         <div className="mt-4">
           <input
-            className={`peer block rounded-md border border-gray-400 p-[9px] text-sm ${PLACEHOLDER_COLOR_SURFACE_VARIANT}`}
+            className={`peer block rounded-md border ${BORDER_COLOR_SURFACE_VARIANT} p-[9px] text-sm ${PLACEHOLDER_COLOR_SURFACE_VARIANT}`}
             id="username"
             type="text"
             name="username"
             placeholder="Benutzername"
             defaultValue={username}
-            pattern="^.*?\S.*$"
-            title="Benutzername darf nicht leer sein"
+            pattern={usernamePattern.source}
+            title={usernameTitle}
             required
           />
         </div>
         <div className="mt-4">
           <input
-            className={`peer block rounded-md border border-gray-400 p-[9px] text-sm ${PLACEHOLDER_COLOR_SURFACE_VARIANT}`}
+            className={`peer block rounded-md border ${BORDER_COLOR_SURFACE_VARIANT} p-[9px] text-sm ${PLACEHOLDER_COLOR_SURFACE_VARIANT}`}
             id="password"
             type="password"
             name="password"
             placeholder="Passwort"
-            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
-            title="Das Passwort muss min 8 Zeichen lang sein, einen Kleinbuchstaben, einen Großbuchstaben, eine Zahl und ein Sonderzeichen enthalten"
+            pattern={passwordPattern}
+            title={passwordTitle}
             value={password}
             onChange={(e) => {
               setPassword(e.target.value);
@@ -80,7 +91,7 @@ export default function RegisterForm({ idParam }: { idParam: string }) {
         </div>
         <div className="mt-4">
           <input
-            className={`peer block rounded-md border border-gray-400 p-[9px] text-sm ${PLACEHOLDER_COLOR_SURFACE_VARIANT}`}
+            className={`peer block rounded-md border ${BORDER_COLOR_SURFACE_VARIANT} p-[9px] text-sm ${PLACEHOLDER_COLOR_SURFACE_VARIANT}`}
             id="confirmPassword"
             type="password"
             name="confirmPassword"
@@ -105,9 +116,9 @@ export default function RegisterForm({ idParam }: { idParam: string }) {
           aria-live="polite"
           aria-atomic="true"
         >
-            {errorMessage && (
+          {errorMessage && (
             <p className="text-xs text-red-500 break-words" dangerouslySetInnerHTML={{ __html: errorMessage }} />
-            )}
+          )}
           <p className={`text-xs ${TEXT_COLOR_ON_SURFACE_VARIANT} mt-2`}>
             Durch registrieren akzeptieren Sie<br/>
             unsere <a href="/terms-of-service" className="text-blue-500 underline">Nutzungsbedingungen</a>.

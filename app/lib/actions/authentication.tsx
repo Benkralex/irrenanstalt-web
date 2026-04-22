@@ -5,6 +5,7 @@ import { signIn } from '@/auth';
 import { AuthError } from 'next-auth';
 import { deleteInviteById, getInviteById } from '../database/invites';
 import { addUser, checkEmail, checkUsername, hashPassword } from '../database/users';
+import { getPasswordRequirementsMessage, getPasswordRequirementsRegex } from '../check-password-requirements';
 
 type AuthenticateState = {
   errorMessage: string;
@@ -16,8 +17,8 @@ export async function authenticate(
   formData: FormData,
 ) {
   const FormSchema = z.object({
-    email: z.email(),
-    password: z.string(),
+    email: z.email({ message: "Ungültige E-Mail-Adresse" }),
+    password: z.string({ message: "Passwort ist erforderlich" }).length(1, { message: "Passwort ist leer" }),
   });
 
   try {
@@ -65,15 +66,12 @@ export async function register(
       .regex(/^.*?\S.*$/, { 
         message: "Benutzername darf nicht leer sein<br>" 
       }),
-    password: z.string().regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, { 
-        message: "Das Passwort muss\
-        <ul class=\"list-disc ml-5\">\
-        <li>mindestens 8 Zeichen lang sein</li>\
-        <li>einen Kleinbuchstaben enthalten</li>\
-        <li>einen Großbuchstaben enthalten</li>\
-        <li>eine Zahl enthalten</li>\
-        <li>ein Sonderzeichen enthalten</li></ul>"
-      }),
+    password: z.string().regex(
+      getPasswordRequirementsRegex(), 
+      { 
+        message: getPasswordRequirementsMessage()
+      },
+    ),
     confirmPassword: z.string(),
     id: z.uuid({ message: "Ungültige Einladung<br>" }),
     redirectTo: z.string().optional(),

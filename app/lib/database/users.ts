@@ -58,3 +58,32 @@ export async function getUserById(id: string): Promise<User | null> {
     where: { id: id },
   });
 }
+
+export async function updateEmail(userId: string, newEmail: string): Promise<User> {
+  return await prisma.users.update({
+    where: { id: userId },
+    data: { email: newEmail },
+  });
+}
+
+export async function updateUsername(userId: string, newUsername: string): Promise<User> {
+  return await prisma.users.update({
+    where: { id: userId },
+    data: { username: newUsername },
+  });
+}
+
+export async function updateFullname(userId: string, newFullname: string): Promise<User> {
+  return await prisma.users.update({
+    where: { id: userId },
+    data: { fullname: newFullname },
+  });
+}
+
+export async function updatePassword(userId: string, unhashedNewPassword: string): Promise<User> {
+  const hashedPassword = await hashPassword(unhashedNewPassword);
+  return await prisma.users.update({
+    where: { id: userId },
+    data: { password: hashedPassword },
+  });
+}

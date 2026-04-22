@@ -1,7 +1,7 @@
 "use client";
 import { sendTestEmail, TestEmailState } from "@/app/lib/actions/send-test-email";
 import { useActionState, useState } from "react";
-import { BG_COLOR_PRIMARY, PLACEHOLDER_COLOR_SURFACE_VARIANT, TEXT_COLOR_ON_PRIMARY, TEXT_COLOR_ON_SURFACE_VARIANT } from "../constants";
+import { BG_COLOR_PRIMARY, BORDER_COLOR_SURFACE_VARIANT, PLACEHOLDER_COLOR_SURFACE_VARIANT, TEXT_COLOR_ON_PRIMARY, TEXT_COLOR_ON_SURFACE_VARIANT } from "../constants";
 
 export function SendTestEmailForm({recipient: initialRecipient}: {recipient?: string | null}) {
     const initialState: TestEmailState = {
@@ -19,7 +19,7 @@ export function SendTestEmailForm({recipient: initialRecipient}: {recipient?: st
                 className="flex items-center justify-center gap-4"
             >
                 <input 
-                    className={`peer block rounded-md border border-gray-400 p-[9px] text-sm ${PLACEHOLDER_COLOR_SURFACE_VARIANT}`}
+                    className={`peer block rounded-md border ${BORDER_COLOR_SURFACE_VARIANT} p-[9px] text-sm ${PLACEHOLDER_COLOR_SURFACE_VARIANT}`}
                     type="email"
                     name="recipient"
                     value={recipient}

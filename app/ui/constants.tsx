@@ -5,15 +5,18 @@
 export const BG_COLOR_SURFACE = `bg-(--light-color-surface) dark:bg-(--dark-color-surface)`;
 export const BG_CODE = `bg-(--dark-color-surface-bright)`;
 export const BG_COLOR_PRIMARY = `bg-(--light-color-primary) dark:bg-(--dark-color-primary)`;
+export const BG_COLOR_ERROR = `bg-(--light-color-error) dark:bg-(--dark-color-error)`;
 
 // Text colors
 export const TEXT_COLOR_ON_SURFACE = `text-(--light-color-on-surface) dark:text-(--dark-color-on-surface)`;
 export const TEXT_CODE = `text-(--dark-color-on-surface)`;
 export const TEXT_COLOR_ON_SURFACE_VARIANT = `text-(--light-color-on-surface-variant) dark:text-(--dark-color-on-surface-variant)`;
 export const TEXT_COLOR_ON_PRIMARY = `text-(--light-color-on-primary) dark:text-(--dark-color-on-primary)`;
+export const TEXT_COLOR_ON_ERROR = `text-(--light-color-on-error) dark:text-(--dark-color-on-error)`;
 
 // Other colors
 export const PLACEHOLDER_COLOR_SURFACE_VARIANT = `placeholder:text-(--light-color-on-surface-variant) dark:text-(--dark-color-on-surface-variant)`;
+export const BORDER_COLOR_SURFACE_VARIANT = `border-(--light-color-on-surface-variant) dark:border-(--dark-color-on-surface-variant)`;
 
 //
 //   STRINGS
