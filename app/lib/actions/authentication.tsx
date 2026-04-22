@@ -18,7 +18,7 @@ export async function authenticate(
 ) {
   const FormSchema = z.object({
     email: z.email({ message: "Ungültige E-Mail-Adresse" }),
-    password: z.string({ message: "Passwort ist erforderlich" }).length(1, { message: "Passwort ist leer" }),
+    password: z.string({ message: "Passwort ist erforderlich" }).min(1, { message: "Passwort ist leer" }),
   });
 
   try {
