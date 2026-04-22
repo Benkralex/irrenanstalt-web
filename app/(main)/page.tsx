@@ -23,7 +23,9 @@ export default async function Home() {
       ${BG_COLOR_SURFACE} ${TEXT_COLOR_ON_SURFACE}
     `}>
       <h1 className="text-3xl font-bold mb-8">Startseite</h1>
-      <p dangerouslySetInnerHTML={{ __html: greeting }} />
+      <div className={`text-center whitespace-pre-line ${greeting.className ?? "text-base"}`}>
+        {greeting.string}
+      </div>
       {!emailVerified && (
         <SendVerifyEmailForm />
       )}
@@ -31,9 +33,13 @@ export default async function Home() {
   );
 }
 
-function getRandomGreeting(username: string | undefined, tags: string[] | undefined): string {
+function getRandomGreeting(username: string | undefined, tags: string[] | undefined): Greeting {
   if (GREETING_TEXTS.length === 0 || tags === undefined || tags === null || tags.length === 0) {
-    return "Willkommen!";
+    return {
+      string: "Willkommen!",
+      allowedTags: [],
+      probability: 100,
+    };
   }
 
   let totalProbability = 0;
@@ -53,7 +59,11 @@ function getRandomGreeting(username: string | undefined, tags: string[] | undefi
   }
 
   if (eligibleGreetings.length === 0 || totalProbability === 0) {
-    return "Willkommen!";
+    return {
+      string: "Willkommen!",
+      allowedTags: [],
+      probability: 100,
+    };
   }
 
   const randomValue = Math.random() * totalProbability;
@@ -62,9 +72,16 @@ function getRandomGreeting(username: string | undefined, tags: string[] | undefi
   for (let i = 0; i < eligibleGreetings.length; i++) {
     cumulative += eligibleGreetings[i].probability;
     if (randomValue < cumulative) {
-      return eligibleGreetings[i].string.replace("%USERNAME%", username || "Gast");
+      return {
+        ...eligibleGreetings[i],
+        string: eligibleGreetings[i].string.replace("%USERNAME%", username || "Gast"),
+      };
     }
   }
 
-  return "Willkommen!";
+  return {
+    string: "Willkommen!",
+    allowedTags: [],
+    probability: 100,
+  };
 }

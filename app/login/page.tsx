@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import LoginForm from "@/app/ui/login-form";
 import { BG_COLOR_SURFACE, TEXT_COLOR_ON_SURFACE } from "@/app/ui/constants";
 
@@ -14,7 +15,9 @@ export default function Login() {
       ${BG_COLOR_SURFACE} ${TEXT_COLOR_ON_SURFACE}
     `}>
       <h1 className="text-3xl font-bold mb-8">Login</h1>
-      <LoginForm />
+      <Suspense fallback={null}>
+        <LoginForm />
+      </Suspense>
     </main>
   );
 }

@@ -22,12 +22,13 @@ export type Greeting = {
   string: string;
   allowedTags: string[];
   probability: number; // Value between 0 and 100
+    className?: string;
 };
 
 export const GREETING_TEXTS: Greeting[] = [
     //Common (20)
     {
-        string: "Ich freue mich sehr, Euch zu sehen, meine Hoheit!<br />Ich hoffe es geht Euch gut!",
+                string: "Ich freue mich sehr, Euch zu sehen, meine Hoheit!\nIch hoffe es geht Euch gut!",
         allowedTags: ["admin"],
         probability: 20,
     },
@@ -54,8 +55,9 @@ export const GREETING_TEXTS: Greeting[] = [
     },
     // Very rare (1)
     {
-        string: "<h1 class=\"text-5xl font-bold\">67</h1>",
+        string: "67",
         allowedTags: [],
         probability: 1,
+        className: "text-5xl font-bold",
     }
 ];
