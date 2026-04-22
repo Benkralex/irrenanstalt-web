@@ -1,13 +1,31 @@
 "use client";
 import { sendVerifyEmail } from "@/app/lib/actions/send-verify-email";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { BG_COLOR_PRIMARY, TEXT_COLOR_ON_PRIMARY } from "./constants";
 import { VerifyEmailState } from "../lib/actions/send-verify-email";
+import { useRouter } from "next/navigation";
+
+export function EmailVerificationPoller() {
+    const router = useRouter();
+
+    useEffect(() => {
+        const intervalId = window.setInterval(() => {
+            router.refresh();
+        }, 10000);
+
+        return () => {
+            window.clearInterval(intervalId);
+        };
+    }, [router]);
+
+    return null;
+}
 
 export function SendVerifyEmailForm() {
     const initialState: VerifyEmailState = {
         errorMessage: "",
         resultMessage: "",
+        buttonMessage: "Code senden",
     };
 
     const [state, formAction, isPending] = useActionState(sendVerifyEmail, initialState);
@@ -29,7 +47,7 @@ export function SendVerifyEmailForm() {
                     aria-disabled={isPending}
                     disabled={isPending}
                 >
-                Code senden
+                {state?.buttonMessage}
                 </button>
             </div>
             <div

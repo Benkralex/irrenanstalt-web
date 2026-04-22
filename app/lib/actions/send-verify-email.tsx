@@ -7,6 +7,7 @@ import { auth } from '@/auth';
 export type VerifyEmailState = {
   errorMessage: string;
   resultMessage: string;
+  buttonMessage: string;
 };
 
 export async function sendVerifyEmail(
@@ -44,8 +45,9 @@ export async function sendVerifyEmail(
   }
 
   return { 
-    ...prevState, 
+    ...prevState,
     errorMessage: '', 
-    resultMessage: 'Verifikations-E-Mail erfolgreich gesendet'
+    resultMessage: 'Verifikations-E-Mail erfolgreich gesendet',
+    buttonMessage: 'Code erneut senden',
   };
 }

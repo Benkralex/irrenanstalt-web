@@ -26,9 +26,6 @@ export default async function Home() {
       <div className={`text-center whitespace-pre-line ${greeting.className ?? "text-base"}`}>
         {greeting.string}
       </div>
-      {!emailVerified && (
-        <SendVerifyEmailForm />
-      )}
     </main>
   );
 }
