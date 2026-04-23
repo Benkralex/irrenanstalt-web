@@ -1,8 +1,14 @@
 ## Getting Started
 
+Prerequisits:
+- npm
+- docker
+
 First, run the development server:
 
 ```bash
+docker compose up -d
+npm update
 npm run dev
 ```
 
