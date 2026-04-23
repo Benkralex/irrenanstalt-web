@@ -1,6 +1,13 @@
 import type { NextAuthConfig } from 'next-auth';
 import { parseTags } from './app/lib/database/users';
 import type { User as AppUser } from './app/lib/database/definitions';
+
+type SafeUser = Omit<AppUser, 'password'>;
+
+function sanitizeUser(user: AppUser | SafeUser): SafeUser {
+  const { password: _password, ...safeUser } = user as AppUser;
+  return safeUser;
+}
  
 export const authConfig = {
   pages: {
@@ -34,18 +41,25 @@ export const authConfig = {
       const isLoggedIn = !!auth?.user;
       return isLoggedIn;
     },
-    jwt({ token, user }) {
-      if (user) { // User is available during sign-in
-        console.log('User signed in:', user);
-        token.user = user as AppUser;
+    jwt({ token, user, trigger, session }) {
+      if (user) {
+        token.user = sanitizeUser(user as AppUser);
       }
-      return token
+
+      if (trigger === 'update' && session?.user) {
+        token.user = {
+          ...(token.user as SafeUser | undefined),
+          ...session.user,
+        };
+      }
+
+      return token;
     },
     session({ session, token }) {
       if (token.user) {
         session.user = token.user as typeof session.user;
       }
-      return session
+      return session;
     },
   },
   providers: [],

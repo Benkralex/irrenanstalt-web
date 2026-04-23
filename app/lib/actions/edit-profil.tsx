@@ -1,7 +1,7 @@
 "use server";
 import { z } from "zod";
 import { checkPasswordRequirements, getPasswordRequirementsMessage } from "../check-password-requirements";
-import { auth } from "@/auth";
+import { auth, unstable_update } from "@/auth";
 import { checkEmail, checkUsername, parseTags, updateEmail, updateFullname, updatePassword, updateUsername } from "../database/users";
 
 export type EditProfilState = {
@@ -127,6 +127,15 @@ export async function editProfile(
         if (validatedFields.data.password) {
             await updatePassword(session.user.id, validatedFields.data.password);
         }
+
+        await unstable_update({
+            user: {
+                ...session.user,
+                email: validatedFields.data.email,
+                fullname: validatedFields.data.fullname,
+                username: validatedFields.data.username,
+            },
+        });
 
         return {
             ...prevState,

@@ -5,7 +5,7 @@ import { z } from 'zod';
 import bcrypt from 'bcrypt';
 import { getUserByEmail } from './app/lib/database/users';
  
-export const { auth, signIn, signOut } = NextAuth({
+export const { auth, signIn, signOut, unstable_update } = NextAuth({
   ...authConfig,
   providers: [
     Credentials({

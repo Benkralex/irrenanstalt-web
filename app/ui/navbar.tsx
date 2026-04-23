@@ -1,4 +1,5 @@
 import { auth, signOut } from '@/auth';
+import { parseTags } from '../lib/database/users';
 
 export async function Navbar() {
   const session = await auth()
@@ -16,7 +17,7 @@ export async function Navbar() {
         <ul className='flex gap-[20px]'>
           <li><a href="/">Startseite</a></li>
           <li><a href="/events">Events</a></li>
-          { username === "Admin" && (
+          { parseTags(session?.user?.tags || '').includes('admin') && (
             <li><a href="/admin">Admin Dashboard</a></li>
           )}
           <li><a href="/profile">Profil</a></li>

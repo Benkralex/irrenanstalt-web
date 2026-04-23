@@ -20,7 +20,8 @@ npx prisma studio
 
 ## ToDos
 
-- [ ] Change Session if user changes profile infos
+- [x] Change Session if user changes profile infos
+- [ ] Verify Email if changed
 - [ ] Reset Password via Email
 - [ ] 2FA
 - [ ] Profile Pic
