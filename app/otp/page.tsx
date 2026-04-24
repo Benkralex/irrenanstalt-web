@@ -16,15 +16,19 @@ type LoginPageProps = {
 export default async function Login({ searchParams }: LoginPageProps) {
   const resolvedSearchParams = searchParams ? await searchParams : {};
   const session = await auth();
-  if (session?.user.email) {
-    const checkEmailVerified = session?.user.emailVerified ? true : await isEmailVerified(session?.user.email);
-    if (checkEmailVerified) {
-      const callbackValue = resolvedSearchParams.callbackURL ?? resolvedSearchParams.callbackUrl;
-      const callbackURL = Array.isArray(callbackValue) ? callbackValue[0] : callbackValue;
-      redirect(callbackURL || "/");
-    } else {
-      redirect("/verify-email/verify");
-    }
+  if (!session?.user?.email) {
+    redirect('/login');
+  }
+
+  const callbackValue = resolvedSearchParams.callbackURL ?? resolvedSearchParams.callbackUrl;
+  const callbackURL = Array.isArray(callbackValue) ? callbackValue[0] : callbackValue;
+  const safeCallbackURL = callbackURL?.startsWith('/') ? callbackURL : '/';
+  const checkEmailVerified = session.user.emailVerified ? true : await isEmailVerified(session.user.email);
+  if (!checkEmailVerified) {
+    redirect("/verify-email/verify");
+  }
+  if (!session.user.otpRequired || session.user.otpVerified) {
+    redirect(safeCallbackURL || "/");
   }
 
   return (
@@ -34,7 +38,7 @@ export default async function Login({ searchParams }: LoginPageProps) {
       ${BG_COLOR_SURFACE} ${TEXT_COLOR_ON_SURFACE}
     `}>
       <h1 className="text-3xl font-bold mb-8">OTP Code</h1>
-      <OTPForm />
+      <OTPForm callbackUrl={safeCallbackURL || '/'} />
     </main>
   );
 }

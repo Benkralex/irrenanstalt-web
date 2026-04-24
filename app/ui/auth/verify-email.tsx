@@ -1,9 +1,9 @@
 "use client";
 import { sendVerifyEmail } from "@/app/lib/actions/send-verify-email";
 import { useActionState, useEffect } from "react";
-import { BG_COLOR_PRIMARY, TEXT_COLOR_ON_PRIMARY } from "./constants";
-import { VerifyEmailState } from "../lib/actions/send-verify-email";
+import { VerifyEmailState } from "@/app/lib/actions/send-verify-email";
 import { useRouter } from "next/navigation";
+import { PRIMARY_BUTTON } from "@/app/ui/constants";
 
 export function EmailVerificationPoller() {
     const router = useRouter();
@@ -38,12 +38,7 @@ export function SendVerifyEmailForm() {
             >
                 <button
                     type="submit"
-                    className={`
-                        rounded-lg px-4 text-sm font-medium text-white 
-                        h-10
-                        aria-disabled:cursor-not-allowed aria-disabled:opacity-50
-                        transition-colors ${BG_COLOR_PRIMARY} ${TEXT_COLOR_ON_PRIMARY}
-                    `}
+                    className={`${PRIMARY_BUTTON}`}
                     aria-disabled={isPending}
                     disabled={isPending}
                 >

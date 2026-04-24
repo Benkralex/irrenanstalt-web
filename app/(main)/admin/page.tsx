@@ -1,6 +1,5 @@
 import { DebugSection } from "@/app/ui/admin/debug";
 import { SendInviteEmailForm } from "@/app/ui/admin/invite-email";
-import { Test2FA } from "@/app/ui/admin/test-2fa";
 import { SendTestEmailForm } from "@/app/ui/admin/test-email";
 import { BG_COLOR_SURFACE, TEXT_COLOR_ON_SURFACE } from "@/app/ui/constants";
 import { auth } from "@/auth";
@@ -28,8 +27,6 @@ export default async function Home() {
                     <SendTestEmailForm recipient={session?.user?.email} />
                     <h2 className="text-xl font-semibold mb-4">Debug Section</h2>
                     <DebugSection />
-                    <h2 className="text-xl font-semibold mt-8">Test 2FA</h2>
-                    <Test2FA />
                 </div>
             </details>
         </main>

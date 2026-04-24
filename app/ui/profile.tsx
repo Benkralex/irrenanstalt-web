@@ -1,6 +1,6 @@
 "use client";
 import { useActionState, useState } from "react";
-import { BG_COLOR_PRIMARY, BG_COLOR_ERROR, BORDER_COLOR_SURFACE_VARIANT, PLACEHOLDER_COLOR_SURFACE_VARIANT, TEXT_COLOR_ON_PRIMARY, TEXT_COLOR_ON_ERROR } from "./constants";
+import { BG_COLOR_PRIMARY, BG_COLOR_ERROR, BORDER_COLOR_SURFACE_VARIANT, PLACEHOLDER_COLOR_SURFACE_VARIANT, TEXT_COLOR_ON_PRIMARY, TEXT_COLOR_ON_ERROR, PRIMARY_BUTTON, PRIMARY_CONTAINER_BUTTON } from "./constants";
 import { editProfile } from "../lib/actions/edit-profil";
 
 type ShowAndEditProfileProps = {
@@ -140,29 +140,16 @@ export default function ShowAndEditProfile({
             </div>
             {isEditing && (
                 <div className="flex justify-center items-center mt-4 gap-4">
-                    <button className={`
-                        rounded-lg px-4 text-sm font-medium text-white h-10
-                        aria-disabled:cursor-not-allowed aria-disabled:opacity-50
-                        transition-colors ${BG_COLOR_ERROR} ${TEXT_COLOR_ON_ERROR}
-                    `} onClick={() => cancelEditing()} type="button">
+                    <button className={`${PRIMARY_CONTAINER_BUTTON}`} onClick={() => cancelEditing()} type="button">
                         Abbrechen
                     </button>
-                    <button className={`
-                        rounded-lg px-4 text-sm font-medium text-white h-10
-                        aria-disabled:cursor-not-allowed aria-disabled:opacity-50
-                        transition-colors ${BG_COLOR_PRIMARY} ${TEXT_COLOR_ON_PRIMARY}
-                    `} type="submit" aria-disabled={isPending}>
+                    <button className={`${PRIMARY_BUTTON}`} type="submit" aria-disabled={isPending}>
                         Speichern
                     </button>
                 </div>
             )}
             {!isEditing && (
-                <button className={`
-                    rounded-lg px-4 text-sm font-medium text-white 
-                    h-10 mt-4
-                    aria-disabled:cursor-not-allowed aria-disabled:opacity-50
-                    transition-colors ${BG_COLOR_PRIMARY} ${TEXT_COLOR_ON_PRIMARY}
-                `} onClick={() => setIsEditing(editingPermitted)} type="button" aria-disabled={!editingPermitted}>
+                <button className={`mt-4 ${PRIMARY_BUTTON}`} onClick={() => setIsEditing(editingPermitted)} type="button" aria-disabled={!editingPermitted}>
                     Bearbeiten
                 </button>
             )}

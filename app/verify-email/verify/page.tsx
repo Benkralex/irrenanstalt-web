@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { BG_COLOR_SURFACE, TEXT_COLOR_ON_SURFACE } from "@/app/ui/constants";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import { EmailVerificationPoller, SendVerifyEmailForm } from "@/app/ui/verify-email";
+import { EmailVerificationPoller, SendVerifyEmailForm } from "@/app/ui/auth/verify-email";
 import { isEmailVerified } from "@/app/lib/database/email-verify";
 
 export const metadata: Metadata = {

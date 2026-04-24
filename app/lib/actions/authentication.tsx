@@ -1,12 +1,13 @@
 'use server';
 
 import { z } from 'zod';
-import { auth, signIn } from '@/auth';
+import { auth, signIn, unstable_update } from '@/auth';
 import { AuthError } from 'next-auth';
+import { redirect } from 'next/navigation';
 import { deleteInviteById, getInviteById } from '../database/invites';
-import { addUser, checkEmail, checkUsername, get2FASecret, hashPassword } from '../database/users';
+import { addUser, checkEmail, checkUsername, getExistingOTPSecret, hashPassword } from '../database/users';
 import { getPasswordRequirementsMessage, getPasswordRequirementsRegex } from '../check-password-requirements';
-import { verifyToken } from '../2fa';
+import { verifyOPTToken } from '../otp';
 
 type AuthenticateState = {
   errorMessage: string;
@@ -190,11 +191,27 @@ export async function check2FA(
   if (!userId) {
     return { ...prevState, message: 'Benutzer nicht authentifiziert' };
   }
-  const secret = await get2FASecret(userId);
+  const secret = await getExistingOTPSecret(userId);
+  if (!secret) {
+    return { ...prevState, message: 'Für diesen Benutzer ist kein OTP aktiviert' };
+  }
   const token = formData.get('otp') as string;
+  const rawCallbackUrl = (formData.get('callbackUrl') as string) || '/';
+  const callbackUrl = rawCallbackUrl.startsWith('/') ? rawCallbackUrl : '/';
   if (!/^\d{6}$/.test(token)) {
     return { ...prevState, message: 'OTP-Code muss aus 6 Ziffern bestehen' };
   }
-  const result = await verifyToken(token, secret);
-  return { ...prevState, message: result ? 'OTP is valid!' : 'OTP is invalid!' };
+  const result = await verifyOPTToken(token, secret);
+  if (!result) {
+    return { ...prevState, message: 'OTP is invalid!' };
+  }
+
+  await unstable_update({
+    user: {
+      otpRequired: true,
+      otpVerified: true,
+    },
+  });
+
+  redirect(callbackUrl);
 }

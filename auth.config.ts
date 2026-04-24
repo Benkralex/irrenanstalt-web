@@ -2,10 +2,10 @@ import type { NextAuthConfig } from 'next-auth';
 import { parseTags } from './app/lib/database/users';
 import type { User as AppUser } from './app/lib/database/definitions';
 
-type SafeUser = Omit<AppUser, 'password'>;
+type SafeUser = Omit<AppUser, 'password' | 'secondFactorSecret'>;
 
 function sanitizeUser(user: AppUser | SafeUser): SafeUser {
-  const { password: _password, ...safeUser } = user as AppUser;
+  const { password: _password, secondFactorSecret: _secondFactorSecret, ...safeUser } = user as AppUser;
   return safeUser;
 }
  
@@ -22,6 +22,7 @@ export const authConfig = {
       if (
         nextUrl.pathname === '/login' || 
         nextUrl.pathname === '/register' || 
+        nextUrl.pathname === '/otp' ||
         nextUrl.pathname === '/terms-of-service' || 
         (
           nextUrl.pathname !== '/verify-email/verify' && 
@@ -32,6 +33,14 @@ export const authConfig = {
       }
       if (nextUrl.pathname.startsWith('/verify-email')) {
         return !!auth?.user;
+      }
+      const otpRequired = !!auth?.user?.otpRequired;
+      const otpVerified = !!auth?.user?.otpVerified;
+      if (otpRequired && !otpVerified) {
+        const callbackUrl = `${nextUrl.pathname}${nextUrl.search}`;
+        const otpUrl = new URL('/otp', nextUrl);
+        otpUrl.searchParams.set('callbackUrl', callbackUrl);
+        return Response.redirect(otpUrl);
       }
       if (auth?.user?.emailVerified === false) {
         return false;
@@ -45,6 +54,8 @@ export const authConfig = {
     jwt({ token, user, trigger, session }) {
       if (user) {
         token.user = sanitizeUser(user as AppUser);
+        token.otpRequired = !!(user as AppUser).secondFactorSecret;
+        token.otpVerified = !token.otpRequired;
       }
 
       if (trigger === 'update' && session?.user) {
@@ -52,6 +63,12 @@ export const authConfig = {
           ...(token.user as SafeUser | undefined),
           ...session.user,
         };
+        if (typeof session.user.otpRequired === 'boolean') {
+          token.otpRequired = session.user.otpRequired;
+        }
+        if (typeof session.user.otpVerified === 'boolean') {
+          token.otpVerified = session.user.otpVerified;
+        }
       }
 
       return token;
@@ -60,6 +77,8 @@ export const authConfig = {
       if (token.user) {
         session.user = token.user as typeof session.user;
       }
+      session.user.otpRequired = !!token.otpRequired;
+      session.user.otpVerified = !!token.otpVerified;
       return session;
     },
   },

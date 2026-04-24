@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { BG_COLOR_SURFACE, TEXT_COLOR_ON_SURFACE } from "@/app/ui/constants";
-import RegisterForm from "@/app/ui/register-form";
+import RegisterForm from "@/app/ui/auth/register-form";
 import { auth } from "@/auth";
 import { isEmailVerified } from "@/app/lib/database/email-verify";
 import { redirect } from "next/navigation";

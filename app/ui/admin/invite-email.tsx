@@ -1,7 +1,7 @@
 "use client";
 import { sendInviteEmail } from "@/app/lib/actions/send-invite-email";
 import { useActionState, useState } from "react";
-import { BG_COLOR_PRIMARY, BORDER_COLOR_SURFACE_VARIANT, PLACEHOLDER_COLOR_SURFACE_VARIANT, TEXT_COLOR_ON_PRIMARY } from "../constants";
+import { BG_COLOR_PRIMARY, BORDER_COLOR_SURFACE_VARIANT, PLACEHOLDER_COLOR_SURFACE_VARIANT, PRIMARY_BUTTON, TEXT_COLOR_ON_PRIMARY } from "../constants";
 import { InviteEmailState } from "@/app/lib/actions/send-invite-email";
 
 export function SendInviteEmailForm({recipient: initialRecipient}: {recipient?: string | null}) {
@@ -31,12 +31,7 @@ export function SendInviteEmailForm({recipient: initialRecipient}: {recipient?: 
                 />
                 <button
                     type="submit"
-                    className={`
-                        rounded-lg px-4 text-sm font-medium text-white 
-                        h-10
-                        aria-disabled:cursor-not-allowed aria-disabled:opacity-50
-                        transition-colors ${BG_COLOR_PRIMARY} ${TEXT_COLOR_ON_PRIMARY}
-                    `}
+                    className={`${PRIMARY_BUTTON}`}
                     aria-disabled={isPending}
                     disabled={isPending}
                 >

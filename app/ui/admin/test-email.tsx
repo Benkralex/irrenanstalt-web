@@ -1,7 +1,7 @@
 "use client";
 import { sendTestEmail, TestEmailState } from "@/app/lib/actions/send-test-email";
 import { useActionState, useState } from "react";
-import { BG_COLOR_PRIMARY, BORDER_COLOR_SURFACE_VARIANT, PLACEHOLDER_COLOR_SURFACE_VARIANT, TEXT_COLOR_ON_PRIMARY, TEXT_COLOR_ON_SURFACE_VARIANT } from "../constants";
+import { BORDER_COLOR_SURFACE_VARIANT, PLACEHOLDER_COLOR_SURFACE_VARIANT, PRIMARY_BUTTON } from "../constants";
 
 export function SendTestEmailForm({recipient: initialRecipient}: {recipient?: string | null}) {
     const initialState: TestEmailState = {
@@ -29,12 +29,7 @@ export function SendTestEmailForm({recipient: initialRecipient}: {recipient?: st
                 />
                 <button
                     type="submit"
-                    className={`
-                        rounded-lg px-4 text-sm font-medium text-white 
-                        h-10
-                        aria-disabled:cursor-not-allowed aria-disabled:opacity-50
-                        transition-colors ${BG_COLOR_PRIMARY} ${TEXT_COLOR_ON_PRIMARY}
-                    `}
+                    className={`${PRIMARY_BUTTON}`}
                     aria-disabled={isPending}
                     disabled={isPending}
                 >

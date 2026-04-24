@@ -3,7 +3,8 @@
 import { useActionState, useState } from 'react';
 import { register } from '@/app/lib/actions/authentication';
 import { useSearchParams } from 'next/navigation';
-import { TEXT_COLOR_ON_SURFACE_VARIANT, PLACEHOLDER_COLOR_SURFACE_VARIANT, BG_COLOR_PRIMARY, TEXT_COLOR_ON_PRIMARY, BORDER_COLOR_SURFACE_VARIANT } from './constants';
+import { TEXT_COLOR_ON_SURFACE_VARIANT, PLACEHOLDER_COLOR_SURFACE_VARIANT, BORDER_COLOR_SURFACE_VARIANT } from '@/app/ui/constants';
+import { PRIMARY_BUTTON } from '../constants';
 
 type RegisterFormProps = {
   idParam: string;
@@ -125,12 +126,7 @@ export default function RegisterForm({ idParam, passwordPattern, passwordTitle }
           </p>
         </div>
         <div className="flex items-center justify-end">
-          <button className={`
-            mt-4 rounded-lg px-4 text-sm font-medium text-white 
-            h-10
-            aria-disabled:cursor-not-allowed aria-disabled:opacity-50
-            transition-colors ${BG_COLOR_PRIMARY} ${TEXT_COLOR_ON_PRIMARY}
-          `} aria-disabled={isPending}>
+          <button className={`mt-4 ${PRIMARY_BUTTON}`} aria-disabled={isPending}>
             Registrieren
           </button>
         </div>

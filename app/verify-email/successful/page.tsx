@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { BG_COLOR_PRIMARY, BG_COLOR_SURFACE, TEXT_COLOR_ON_PRIMARY, TEXT_COLOR_ON_SURFACE } from "@/app/ui/constants";
+import { BG_COLOR_PRIMARY, BG_COLOR_SURFACE, PRIMARY_BUTTON, TEXT_COLOR_ON_PRIMARY, TEXT_COLOR_ON_SURFACE } from "@/app/ui/constants";
 import { auth } from "@/auth";
 
 export const metadata: Metadata = {
@@ -18,12 +18,7 @@ export default async function EmailSuccessfulyVerified() {
             <h1 className="text-3xl font-bold mb-8">Email erfolgreich verifiziert</h1>
             {session?.user && (
                 <a href="/">
-                    <button className={`
-                        rounded-lg px-4 text-sm font-medium text-white 
-                        h-10
-                        aria-disabled:cursor-not-allowed aria-disabled:opacity-50
-                        transition-colors ${BG_COLOR_PRIMARY} ${TEXT_COLOR_ON_PRIMARY}
-                    `}>
+                    <button className={`${PRIMARY_BUTTON}`}>
                         Zur Startseite
                     </button>
                 </a>

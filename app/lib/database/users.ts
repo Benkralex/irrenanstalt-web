@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import { PrismaClient } from "@/app/generated/prisma/client";
 import { User } from "./definitions";
 import { generate } from 'otplib';
-import { generateTwoFactorSecret } from '../2fa';
+import { generateOTPSecret } from '../otp';
 const prisma = new PrismaClient();
 
 export async function hashPassword(password: string): Promise<string> {
@@ -90,12 +90,12 @@ export async function updatePassword(userId: string, unhashedNewPassword: string
   });
 }
 
-export async function get2FASecret(userId: string): Promise<string> {
+export async function getOrCreateOTPSecret(userId: string): Promise<string> {
   var user = await prisma.users.findUnique({
     where: { id: userId },
   });
   if (!user?.secondFactorSecret) {
-    const secret = generateTwoFactorSecret();
+    const secret = generateOTPSecret();
     await prisma.users.update({
       where: { id: userId },
       data: { secondFactorSecret: secret },
@@ -105,4 +105,12 @@ export async function get2FASecret(userId: string): Promise<string> {
     });
   }
   return user?.secondFactorSecret!;
+}
+
+export async function getExistingOTPSecret(userId: string): Promise<string | null> {
+  const user = await prisma.users.findUnique({
+    where: { id: userId },
+    select: { secondFactorSecret: true },
+  });
+  return user?.secondFactorSecret ?? null;
 }
