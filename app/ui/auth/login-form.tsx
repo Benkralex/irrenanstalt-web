@@ -3,7 +3,7 @@
 import { useActionState } from 'react';
 import { authenticate } from '@/app/lib/actions/authentication';
 import { useSearchParams } from 'next/navigation';
-import { TEXT_COLOR_ON_SURFACE_VARIANT, PLACEHOLDER_COLOR_SURFACE_VARIANT, BG_COLOR_PRIMARY, TEXT_COLOR_ON_PRIMARY, BORDER_COLOR_SURFACE_VARIANT } from './constants';
+import { TEXT_COLOR_ON_SURFACE_VARIANT, PLACEHOLDER_COLOR_SURFACE_VARIANT, BG_COLOR_PRIMARY, TEXT_COLOR_ON_PRIMARY, BORDER_COLOR_SURFACE_VARIANT } from '@/app/ui/constants';
 
 export default function LoginForm() {
   const searchParams = useSearchParams();

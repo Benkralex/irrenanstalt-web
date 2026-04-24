@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { BG_CODE, TEXT_CODE } from "../constants";
-import { generateQRCode, generateTwoFactorSecret, generateTwoFactorURL, verifyToken } from "@/app/lib/2fa";
-import OTPForm from "./otp-form";
+import { generateQRCode, generateTwoFactorURL } from "@/app/lib/2fa";
+import OTPForm from "../auth/otp-form";
 import { get2FASecret } from "@/app/lib/database/users";
 
 export async function Test2FA() {

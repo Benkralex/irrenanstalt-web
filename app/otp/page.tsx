@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
-import LoginForm from "@/app/ui/auth/login-form";
 import { redirect } from "next/navigation";
 import { BG_COLOR_SURFACE, TEXT_COLOR_ON_SURFACE } from "@/app/ui/constants";
 import { auth } from "@/auth";
 import { isEmailVerified } from "@/app/lib/database/email-verify";
+import OTPForm from "@/app/ui/auth/otp-form";
 
 export const metadata: Metadata = {
   title: "Login",
@@ -34,10 +33,8 @@ export default async function Login({ searchParams }: LoginPageProps) {
       flex flex-col justify-center items-center gap-4
       ${BG_COLOR_SURFACE} ${TEXT_COLOR_ON_SURFACE}
     `}>
-      <h1 className="text-3xl font-bold mb-8">Login</h1>
-      <Suspense fallback={null}>
-        <LoginForm />
-      </Suspense>
+      <h1 className="text-3xl font-bold mb-8">OTP Code</h1>
+      <OTPForm />
     </main>
   );
 }

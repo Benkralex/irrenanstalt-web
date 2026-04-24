@@ -12,6 +12,7 @@ function sanitizeUser(user: AppUser | SafeUser): SafeUser {
 export const authConfig = {
   pages: {
     signIn: '/login',
+    verifyRequest: "/otp",
   },
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
