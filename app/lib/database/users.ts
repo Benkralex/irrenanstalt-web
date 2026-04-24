@@ -1,6 +1,8 @@
 import bcrypt from 'bcrypt';
 import { PrismaClient } from "@/app/generated/prisma/client";
 import { User } from "./definitions";
+import { generate } from 'otplib';
+import { generateTwoFactorSecret } from '../2fa';
 const prisma = new PrismaClient();
 
 export async function hashPassword(password: string): Promise<string> {
@@ -86,4 +88,21 @@ export async function updatePassword(userId: string, unhashedNewPassword: string
     where: { id: userId },
     data: { password: hashedPassword },
   });
+}
+
+export async function get2FASecret(userId: string): Promise<string> {
+  var user = await prisma.users.findUnique({
+    where: { id: userId },
+  });
+  if (!user?.secondFactorSecret) {
+    const secret = generateTwoFactorSecret();
+    await prisma.users.update({
+      where: { id: userId },
+      data: { secondFactorSecret: secret },
+    });
+    user = await prisma.users.findUnique({
+      where: { id: userId },
+    });
+  }
+  return user?.secondFactorSecret!;
 }

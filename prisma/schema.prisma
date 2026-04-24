@@ -53,14 +53,15 @@ model emailVerification {
 }
 
 model users {
-  id             String           @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  username       String           @unique @db.VarChar(255)
-  fullname       String           @db.VarChar(255)
-  description    String           @default("") @db.Text
-  email          String           @unique
-  emailVerified  Boolean          @default(false)
-  tags           String           @default("") @db.Text
-  password       String           @db.VarChar(255)
-  events         events[]
-  eventResponses eventResponses[]
+  id                 String           @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  username           String           @unique @db.VarChar(255)
+  fullname           String           @db.VarChar(255)
+  description        String           @default("") @db.Text
+  email              String           @unique
+  emailVerified      Boolean          @default(false)
+  tags               String           @default("") @db.Text
+  password           String           @db.VarChar(255)
+  secondFactorSecret String?          @db.VarChar(255)
+  events             events[]
+  eventResponses     eventResponses[]
 }

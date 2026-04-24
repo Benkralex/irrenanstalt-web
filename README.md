@@ -8,7 +8,7 @@ First, run the development server:
 
 ```bash
 docker compose up -d
-npm update
+npm install
 npm run dev
 ```
 

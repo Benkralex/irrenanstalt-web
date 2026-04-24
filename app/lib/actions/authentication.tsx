@@ -1,11 +1,12 @@
 'use server';
 
 import { z } from 'zod';
-import { signIn } from '@/auth';
+import { auth, signIn } from '@/auth';
 import { AuthError } from 'next-auth';
 import { deleteInviteById, getInviteById } from '../database/invites';
-import { addUser, checkEmail, checkUsername, hashPassword } from '../database/users';
+import { addUser, checkEmail, checkUsername, get2FASecret, hashPassword } from '../database/users';
 import { getPasswordRequirementsMessage, getPasswordRequirementsRegex } from '../check-password-requirements';
+import { verifyToken } from '../2fa';
 
 type AuthenticateState = {
   errorMessage: string;
@@ -177,4 +178,23 @@ export async function register(
     }
     throw error;
   }
+}
+
+
+export async function check2FA(
+  prevState: { message: string } | undefined,
+  formData: FormData,
+) {
+  const session = await auth();
+  const userId = session?.user?.id;
+  if (!userId) {
+    return { ...prevState, message: 'Benutzer nicht authentifiziert' };
+  }
+  const secret = await get2FASecret(userId);
+  const token = formData.get('otp') as string;
+  if (!/^\d{6}$/.test(token)) {
+    return { ...prevState, message: 'OTP-Code muss aus 6 Ziffern bestehen' };
+  }
+  const result = await verifyToken(token, secret);
+  return { ...prevState, message: result ? 'OTP is valid!' : 'OTP is invalid!' };
 }
