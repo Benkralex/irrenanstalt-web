@@ -24,7 +24,7 @@ export async function sendVerifyEmail(
 
   const emailVerification = await createEmailVerification(sessionEmail);
 
-  const verificationLink = `${process.env.BASE_URL}/verify-email/${emailVerification.code}`;
+  const verificationLink = `${process.env.BASE_URL}verify-email/${emailVerification.code}`;
 
   try {
     await sendEmailInternal({
