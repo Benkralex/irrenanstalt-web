@@ -1,6 +1,6 @@
 "use client";
 
-import { check2FA } from "@/app/lib/actions/authentication";
+import { checkOTP } from "@/app/lib/actions/otp";
 import { useActionState } from "react";
 import { PRIMARY_BUTTON } from "../constants";
 
@@ -9,7 +9,7 @@ type OTPFormProps = {
 };
 
 export default function OTPForm({ callbackUrl }: OTPFormProps) {
-    const [state, formAction, isPending] = useActionState(check2FA, { message: '' });
+    const [state, formAction, isPending] = useActionState(checkOTP, { message: '' });
     
     return (
         <form action={formAction} className="flex flex-col items-center">

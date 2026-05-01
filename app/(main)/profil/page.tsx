@@ -4,8 +4,7 @@ import { auth } from "@/auth";
 import ShowAndEditProfile from "@/app/ui/profile";
 import { getPasswordRequirementsMessage, getPasswordRequirementsRegex } from "@/app/lib/check-password-requirements";
 import { LogoutButton } from "@/app/ui/auth/logout-button";
-import { generateOPTQRCode, generateOTPURL } from "@/app/lib/otp";
-import { getExistingOTPSecret } from "@/app/lib/database/users";
+import OtpQr from "@/app/ui/auth/otp-qr";
 
 export const metadata: Metadata = {
   title: "Profil",
@@ -18,8 +17,6 @@ export default async function Profile() {
     const email = session?.user?.email;
     const passwordPattern = getPasswordRequirementsRegex().source;
     const passwordTitle = getPasswordRequirementsMessage();
-    const secret = await getExistingOTPSecret(session?.user?.id || "");
-    const otpQRCode = secret ? await generateOPTQRCode(generateOTPURL(session?.user?.email || "", secret)) : null;
 
     return (
         <main className={`
@@ -42,12 +39,7 @@ export default async function Profile() {
                 passwordTitle={passwordTitle}
                 editingPermitted={username !== "Admin"}
             />
-            {otpQRCode && (
-                <div className="mt-8">
-                    <h2 className="text-2xl font-semibold mb-4">OTP QR Code</h2>
-                    <img src={otpQRCode} alt="OTP QR Code" className="w-64 h-64" />
-                </div>
-            )}
+            <OtpQr />
         </main>
     );
 }

@@ -2,10 +2,10 @@ import type { NextAuthConfig } from 'next-auth';
 import { parseTags } from './app/lib/database/users';
 import type { User as AppUser } from './app/lib/database/definitions';
 
-type SafeUser = Omit<AppUser, 'password' | 'secondFactorSecret'>;
+type SafeUser = Omit<AppUser, 'password' | 'otpSecret'>;
 
 function sanitizeUser(user: AppUser | SafeUser): SafeUser {
-  const { password: _password, secondFactorSecret: _secondFactorSecret, ...safeUser } = user as AppUser;
+  const { password: _password, otpSecret: _otpSecret, ...safeUser } = user as AppUser;
   return safeUser;
 }
  
@@ -34,9 +34,9 @@ export const authConfig = {
       if (nextUrl.pathname.startsWith('/verify-email')) {
         return !!auth?.user;
       }
-      const otpRequired = !!auth?.user?.otpRequired;
-      const otpVerified = !!auth?.user?.otpVerified;
-      if (otpRequired && !otpVerified) {
+      const otpRequired = !!auth?.user?.otpRequired && auth?.user?.otpVerified;
+      const otpLoggedIn = !!auth?.user?.otpLoggedIn;
+      if (otpRequired && !otpLoggedIn) {
         const callbackUrl = `${nextUrl.pathname}${nextUrl.search}`;
         const otpUrl = new URL('/otp', nextUrl);
         otpUrl.searchParams.set('callbackUrl', callbackUrl);
@@ -54,7 +54,7 @@ export const authConfig = {
     jwt({ token, user, trigger, session }) {
       if (user) {
         token.user = sanitizeUser(user as AppUser);
-        token.otpRequired = !!(user as AppUser).secondFactorSecret;
+        token.otpRequired = !!(user as AppUser).otpSecret;
         token.otpVerified = !token.otpRequired;
       }
 
@@ -78,7 +78,7 @@ export const authConfig = {
         session.user = token.user as typeof session.user;
       }
       session.user.otpRequired = !!token.otpRequired;
-      session.user.otpVerified = !!token.otpVerified;
+      session.user.otpLoggedIn = !!token.otpVerified;
       return session;
     },
   },

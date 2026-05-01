@@ -3,9 +3,9 @@ import type { User as AppUser } from './app/lib/database/definitions';
 
 declare module 'next-auth' {
   interface Session {
-    user: (Omit<AppUser, 'password' | 'secondFactorSecret'> & {
+    user: (Omit<AppUser, 'password' | 'otpSecret'> & {
       otpRequired?: boolean;
-      otpVerified?: boolean;
+      otpLoggedIn?: boolean;
     }) & DefaultSession['user'];
   }
 
@@ -14,9 +14,9 @@ declare module 'next-auth' {
 
 declare module 'next-auth/jwt' {
   interface JWT {
-    user?: Omit<AppUser, 'password' | 'secondFactorSecret'>;
+    user?: Omit<AppUser, 'password' | 'otpSecret'>;
     username?: string;
     otpRequired?: boolean;
-    otpVerified?: boolean;
+    otpLoggedIn?: boolean;
   }
 }

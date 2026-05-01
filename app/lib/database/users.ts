@@ -94,23 +94,31 @@ export async function getOrCreateOTPSecret(userId: string): Promise<string> {
   var user = await prisma.users.findUnique({
     where: { id: userId },
   });
-  if (!user?.secondFactorSecret) {
+  if (!user?.otpSecret) {
     const secret = generateOTPSecret();
     await prisma.users.update({
       where: { id: userId },
-      data: { secondFactorSecret: secret },
+      data: { otpSecret: secret },
     });
     user = await prisma.users.findUnique({
       where: { id: userId },
     });
   }
-  return user?.secondFactorSecret!;
+  return user?.otpSecret!;
 }
 
 export async function getExistingOTPSecret(userId: string): Promise<string | null> {
   const user = await prisma.users.findUnique({
     where: { id: userId },
-    select: { secondFactorSecret: true },
+    select: { otpSecret: true },
   });
-  return user?.secondFactorSecret ?? null;
+  return user?.otpSecret ?? null;
+}
+
+export async function verifyOTP(userId: string): Promise<boolean> {
+  const user = await prisma.users.update({
+    where: { id: userId },
+    data: { otpVerified: true },
+  });
+  return user.otpVerified;
 }

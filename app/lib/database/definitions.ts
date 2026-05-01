@@ -7,7 +7,8 @@ export type User = {
   emailVerified: boolean;
   tags: string;
   password: string;
-  secondFactorSecret?: string | null;
+  otpSecret?: string | null;
+  otpVerified: boolean;
 };
 
 export type Invite = {

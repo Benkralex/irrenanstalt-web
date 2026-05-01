@@ -6,14 +6,14 @@ import { isEmailVerified } from "@/app/lib/database/email-verify";
 import OTPForm from "@/app/ui/auth/otp-form";
 
 export const metadata: Metadata = {
-  title: "Login",
+  title: "OTP Verification",
 };
 
-type LoginPageProps = {
+type OTPPageProps = {
   searchParams?: Promise<Record<string, string | string[] | undefined>> | Record<string, string | string[] | undefined>;
 };
 
-export default async function Login({ searchParams }: LoginPageProps) {
+export default async function OTPPage({ searchParams }: OTPPageProps) {
   const resolvedSearchParams = searchParams ? await searchParams : {};
   const session = await auth();
   if (!session?.user?.email) {
@@ -27,7 +27,7 @@ export default async function Login({ searchParams }: LoginPageProps) {
   if (!checkEmailVerified) {
     redirect("/verify-email/verify");
   }
-  if (!session.user.otpRequired || session.user.otpVerified) {
+  if (!session.user.otpRequired || session.user.otpLoggedIn) {
     redirect(safeCallbackURL || "/");
   }
 

@@ -10,11 +10,11 @@ export const metadata: Metadata = {
   title: "Login",
 };
 
-type LoginPageProps = {
+type LoginRouteProps = {
   searchParams?: Promise<Record<string, string | string[] | undefined>> | Record<string, string | string[] | undefined>;
 };
 
-export default async function Login({ searchParams }: LoginPageProps) {
+export default async function LoginPage({ searchParams }: LoginRouteProps) {
   const resolvedSearchParams = searchParams ? await searchParams : {};
   const session = await auth();
   if (session?.user.email) {
