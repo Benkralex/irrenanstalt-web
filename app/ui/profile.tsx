@@ -1,6 +1,6 @@
 "use client";
 import { useActionState, useState } from "react";
-import { BG_COLOR_PRIMARY, BG_COLOR_ERROR, BORDER_COLOR_SURFACE_VARIANT, PLACEHOLDER_COLOR_SURFACE_VARIANT, TEXT_COLOR_ON_PRIMARY, TEXT_COLOR_ON_ERROR, PRIMARY_BUTTON, PRIMARY_CONTAINER_BUTTON } from "./constants";
+import { BORDER_COLOR_SURFACE_VARIANT, PLACEHOLDER_COLOR_SURFACE_VARIANT, PRIMARY_BUTTON, PRIMARY_CONTAINER_BUTTON } from "./constants";
 import { editProfile } from "../lib/actions/edit-profil";
 
 type ShowAndEditProfileProps = {

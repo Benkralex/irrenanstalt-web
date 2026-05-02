@@ -66,3 +66,6 @@ npx prisma mirgrate dev # Migrate DB
 - Reset Password via Email
 - Profile Pic
 - Event System
+- Fix OTP QR-Code creation needs page-refresh
+- Fix profil edit not working without DevHost registered
+- Fix profil edit not working in Firefox with HTTP

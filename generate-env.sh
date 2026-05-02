@@ -93,7 +93,7 @@ BASE_URL_PROTOCOL=${BASE_URL_PROTOCOL}
 BASE_URL_HOST=${BASE_URL_HOST}
 BASE_URL_PORT=${BASE_URL_PORT}
 
-PASSWORT_REQUIREMENTS_REGEX=^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\.@$!%*?&]).{8,}$
+PASSWORT_REQUIREMENTS_REGEX=^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\.@\$!%*?&]).{8,}$
 PASSWORT_REQUIREMENTS_MESSAGE=Das Passwort muss<ul class='list-disc ml-5'><li>mindestens 8 Zeichen lang sein</li><li>einen Kleinbuchstaben enthalten</li><li>einen Großbuchstaben enthalten</li><li>eine Zahl enthalten</li><li>ein Sonderzeichen enthalten</li></ul>
 
 ## More characters are better. You can change this later. 
