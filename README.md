@@ -2,6 +2,14 @@
 A event managment and a little bit of social media plattform for use in a friendgroup
 
 # Dev-env
+## Fast (Bash)
+
+- Setup: `curl -fsSL https://raw.githubusercontent.com/Benkralex/irrenanstalt-web/refs/heads/main/install.sh | sh`
+- Run: `cat run.sh | sh`
+- Update: `cat update.sh | sh`
+- (Generate .env: `cat generate-env.sh | sh` (Already in Setup included))
+
+
 ## Setup dev-env
 
 Prerequisits:
