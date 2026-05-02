@@ -3,6 +3,7 @@
 import { sendEmailInternal } from "../send-mail";
 import { createEmailVerification } from '../database/email-verify';
 import { auth } from '@/auth';
+import { makeBaseUrl } from "../env-helpers";
 
 export type VerifyEmailState = {
   errorMessage: string;
@@ -24,7 +25,7 @@ export async function sendVerifyEmail(
 
   const emailVerification = await createEmailVerification(sessionEmail);
 
-  const verificationLink = `${process.env.BASE_URL}verify-email/${emailVerification.code}`;
+  const verificationLink = `${makeBaseUrl()}verify-email/${emailVerification.code}`;
 
   try {
     await sendEmailInternal({

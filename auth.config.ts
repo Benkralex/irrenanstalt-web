@@ -1,6 +1,6 @@
 import type { NextAuthConfig } from 'next-auth';
 import { parseTags } from './app/lib/database/users';
-import type { User as AppUser, SessionType, SessionUser } from './app/lib/database/definitions';
+import type { User as AppUser, SessionUser } from './app/lib/database/definitions';
  
 function isPublic(pathname: string) {
   return ['/login', '/register', '/otp', '/terms-of-service'].includes(pathname) || 

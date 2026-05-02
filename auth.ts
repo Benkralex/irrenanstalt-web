@@ -4,6 +4,9 @@ import { authConfig } from './auth.config';
 import { z } from 'zod';
 import bcrypt from 'bcrypt';
 import { getUserByEmail, getUserByUsername } from './app/lib/database/users';
+import { makeAuthUrl } from '@/app/lib/env-helpers';
+
+process.env.AUTH_URL = makeAuthUrl();
  
 export const { auth, signIn, signOut, unstable_update } = NextAuth({
   ...authConfig,

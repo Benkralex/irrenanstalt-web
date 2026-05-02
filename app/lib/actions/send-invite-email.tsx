@@ -3,6 +3,7 @@
 import { z } from 'zod';
 import { sendEmailInternal } from "../send-mail";
 import { addInvite } from '../database/invites';
+import { makeBaseUrl } from '../env-helpers';
 
 export type InviteEmailState = {
   errorMessage: string;
@@ -42,7 +43,7 @@ export async function sendInviteEmail(
   }
   const inviteId = invite.id;
 
-  const inviteLink = `${process.env.BASE_URL}register/${inviteId}`;
+  const inviteLink = `${makeBaseUrl()}register/${inviteId}`;
 
   try {
     await sendEmailInternal({

@@ -27,9 +27,17 @@ echo -en "${GREEN}DOMAIN$NC 'Used for default values' (default: ${UNDERLINE}beis
 read DOMAIN </dev/tty
 DOMAIN=${DOMAIN:-beispiel.de}
 
-echo -en  "${GREEN}BASE_URL$NC (default: ${UNDERLINE}http://localhost:3000${NC}): "
-read BASE_URL </dev/tty
-BASE_URL=${BASE_URL:-http://localhost:3000}
+echo -en  "${GREEN}BASE_URL_PROTOCOL$NC (default: ${UNDERLINE}http${NC}): "
+read BASE_URL_PROTOCOL </dev/tty
+BASE_URL_PROTOCOL=${BASE_URL_PROTOCOL:-http}
+
+echo -en  "${GREEN}BASE_URL_HOST$NC (default: ${UNDERLINE}localhost${NC}): "
+read BASE_URL_HOST </dev/tty
+BASE_URL_HOST=${BASE_URL_HOST:-localhost}
+
+echo -en  "${GREEN}BASE_URL_PORT$NC (default: ${UNDERLINE}3000${NC}): "
+read BASE_URL_PORT </dev/tty
+BASE_URL_PORT=${BASE_URL_PORT:-3000}
 
 echo -en "${GREEN}ADMIN_EMAIL$NC (default: ${UNDERLINE}admin@${DOMAIN}${NC}): "
 read ADMIN_EMAIL </dev/tty
@@ -81,7 +89,9 @@ POSTGRES_DB=postgres
 POSTGRES_PORT=5432
 
 ## Specify the Protocol (http or https) and the Port and end with a slash. For example: http://localhost:3000/ or https://myapp.com/
-BASE_URL=${BASE_URL}
+BASE_URL_PROTOCOL=${BASE_URL_PROTOCOL}
+BASE_URL_HOST=${BASE_URL_HOST}
+BASE_URL_PORT=${BASE_URL_PORT}
 
 PASSWORT_REQUIREMENTS_REGEX=^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\.@$!%*?&]).{8,}$
 PASSWORT_REQUIREMENTS_MESSAGE=Das Passwort muss<ul class='list-disc ml-5'><li>mindestens 8 Zeichen lang sein</li><li>einen Kleinbuchstaben enthalten</li><li>einen Großbuchstaben enthalten</li><li>eine Zahl enthalten</li><li>ein Sonderzeichen enthalten</li></ul>
@@ -111,9 +121,8 @@ AUTH_SECRET=${AUTH_SECRET}
 ####################################################################
 ## You don't need to change anything below this line in most cases.
 ####################################################################
+BASE_URL=\${BASE_URL_PROTOCOL}://\${BASE_URL_HOST}:\${BASE_URL_PORT}/
 DATABASE_URL=postgresql://\${POSTGRES_USER}:\${POSTGRES_PASSWORD}@\${POSTGRES_HOST}:\${POSTGRES_PORT}/\${POSTGRES_DB}
-POSTGRES_URL=postgresql://\${POSTGRES_USER}:\${POSTGRES_PASSWORD}@\${POSTGRES_HOST}:\${POSTGRES_PORT}/\${POSTGRES_DB}
-AUTH_URL=\${BASE_URL}api/auth
 EOF
 
 echo ""
