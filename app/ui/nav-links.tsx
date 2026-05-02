@@ -8,15 +8,19 @@ import { AdminIcon, EventsIcon, HomeIcon, ProfileIcon } from './icons';
 const links = [
   { name: 'Startseite', icon: <HomeIcon classNames={ICON_COLOR_ON_SURFACE} />, href: '/' },
   { name: 'Events', icon: <EventsIcon classNames={ICON_COLOR_ON_SURFACE} />, href: '/events' },
-  { name: 'Admin', icon: <AdminIcon classNames={ICON_COLOR_ON_SURFACE} />, href: '/admin' },
+  { name: 'Admin', icon: <AdminIcon classNames={ICON_COLOR_ON_SURFACE} />, href: '/admin', needsTag: 'admin' },
   { name: 'Profil', icon: <ProfileIcon classNames={ICON_COLOR_ON_SURFACE} />, href: '/profil' },
 ];
 
-export default function NavLinks() {
+export default function NavLinks({ tags }: { tags: string[] }) {
     const pathname = usePathname();
+
     return (
         <>
             {links.map((link) => {
+                if (link.needsTag && !tags.includes(link.needsTag)) {
+                    return null;
+                }
                 return (
                     <Link key={link.name} href={link.href} className={`
                         flex w-full grow items-center justify-center gap-2

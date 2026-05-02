@@ -34,6 +34,9 @@ export default function RootLayout({
       lang="de"
       className={`h-full ${geistSans.variable} ${geistMono.variable} antialiased ${BG_COLOR_SURFACE} ${TEXT_COLOR_ON_SURFACE}`}
     >
+      <head>
+        <link rel="icon" href="/favicon.svg" />
+      </head>
       <body className="min-h-full flex flex-col">
         {children}
       </body>

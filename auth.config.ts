@@ -1,9 +1,11 @@
 import type { NextAuthConfig } from 'next-auth';
 import { parseTags } from './app/lib/database/users';
 import type { User as AppUser, SessionUser } from './app/lib/database/definitions';
+import { isEmailVerified } from './app/lib/database/email-verify';
  
 function isPublic(pathname: string) {
-  return ['/login', '/register', '/otp', '/terms-of-service'].includes(pathname) || 
+  return ['/login', '/otp', '/terms-of-service', '/no-admin'].includes(pathname) || 
+    pathname.startsWith('/register') ||
     (pathname.startsWith('/verify-email') && pathname !== '/verify-email/verify') ||
     pathname.endsWith('.css');
 }
@@ -19,7 +21,7 @@ export const authConfig = {
     verifyRequest: "/otp",
   },
   callbacks: {
-    authorized({ auth, request: { nextUrl } }) {
+    async authorized({ auth, request: { nextUrl } }) {
       // Public pages
       if (isPublic(nextUrl.pathname)) {
         return true;
@@ -37,12 +39,12 @@ export const authConfig = {
         return Response.redirect(otpUrl);
       }
       // Email verification
-      if (auth?.user?.emailVerified === false) {
+      if (await isEmailVerified(auth?.user?.email || '') === false) {
         return false;
       }
       // Admin
       if (nextUrl.pathname.startsWith('/admin')) {
-        return parseTags(auth?.user?.tags || '').includes('admin');
+        return parseTags(auth?.user?.tags || '').includes('admin') ? true : Response.redirect(new URL('/no-admin', nextUrl));
       }
       // Default: require authentication
       const isLoggedIn = !!auth?.user;

@@ -17,7 +17,7 @@ export default async function Register(props: { params: Promise<{ id: string }> 
   const session = await auth();
   const passwordPattern = getPasswordRequirementsRegex().source;
   const passwordTitle = getPasswordRequirementsMessage();
-  if (session?.user.email) {
+  if (session?.user?.email) {
     const checkEmailVerified = session?.user.emailVerified ? true : await isEmailVerified(session?.user.email);
     if (checkEmailVerified) {
       redirect("/");
@@ -37,7 +37,6 @@ export default async function Register(props: { params: Promise<{ id: string }> 
       ${BG_COLOR_SURFACE} ${TEXT_COLOR_ON_SURFACE}
     `}>
       <h1 className="text-3xl font-bold mb-8">Registrieren</h1>
-      <p>Registrieren mit ID: {id}</p>
       <RegisterForm idParam={id} passwordPattern={passwordPattern} passwordTitle={passwordTitle} />
     </main>
   );

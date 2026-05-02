@@ -8,7 +8,7 @@ export async function DebugSection() {
     return (
         <div>
             <h3 className="text-lg mb-2">Raw Session Object</h3>
-            <pre className={`p-2 rounded ${BG_CODE} ${TEXT_CODE} overflow-x-auto`}>
+            <pre className={`p-2 rounded ${BG_CODE} ${TEXT_CODE} overflow-x-auto text-left`}>
                 {JSON.stringify(session, null, 2)}
             </pre>
         </div>

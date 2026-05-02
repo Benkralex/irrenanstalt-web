@@ -11,7 +11,7 @@ export async function addInvite(email: string): Promise<Invite> {
 }
 
 export async function getInviteById(id: string): Promise<Invite | null> {
-  if (id.length !== 32) {
+  if (id.length !== 32 && id.length !== 36) {
     console.warn(`Invalid invite ID format: ${id}`);
     return null;
   }

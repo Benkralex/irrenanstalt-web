@@ -1,6 +1,7 @@
 import { auth } from "@/auth"
 import type { Metadata } from "next";
 import { BG_COLOR_SURFACE, Greeting, GREETING_TEXTS, TEXT_COLOR_ON_SURFACE } from "../ui/constants";
+import { DebugSection } from "../ui/admin/debug";
 
 export const metadata: Metadata = {
   title: "Startseite",
@@ -8,8 +9,8 @@ export const metadata: Metadata = {
 
 export default async function Home() {
   const session = await auth()
-  const username = session?.user.username
-  const tags = session?.user.tags?.split(",") || []
+  const username = session?.user?.username
+  const tags = session?.user?.tags?.split(",") || []
 
   const greeting = getRandomGreeting(username, tags);
 
@@ -22,6 +23,8 @@ export default async function Home() {
       <h1 className="text-3xl font-bold mb-8">Startseite</h1>
       <div className={`text-center whitespace-pre-line ${greeting.className ?? "text-base"}`}>
         {greeting.string}
+        <h2 className="text-xl font-semibold mb-4">Debug Section</h2>
+        <DebugSection />
       </div>
     </main>
   );
