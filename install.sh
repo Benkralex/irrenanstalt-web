@@ -1,6 +1,6 @@
 #!/bin/bash
 
-git clone https://github.com/benkralx/irrenanstalt-web.git
+git clone https://github.com/Benkralex/irrenanstalt-web.git
 cd irrenanstalt-web
 /bin/bash generate-env.sh
 docker-compose up -d
