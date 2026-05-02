@@ -8,7 +8,7 @@ UNDERLINE='\e[4m'
 
 if [ -f .env ]; then
     echo -en "${RED}.env file already exists.${NC} Do you want to overwrite it? (${RED}y${NC}/${GREEN}${UNDERLINE}N${NC}) "
-    read OVERWRITE_ENV
+    read OVERWRITE_ENV </dev/tty
     if [[ "$OVERWRITE_ENV" =~ ^[Yy]$ ]]; then
         rm .env
         echo -e "${YELLOW}Existing .env file removed. Generating a new one...${NC}"
@@ -24,48 +24,48 @@ echo ""
 echo ""
 
 echo -en "${GREEN}DOMAIN$NC 'Used for default values' (default: ${UNDERLINE}beispiel.de${NC}): "
-read DOMAIN
+read DOMAIN </dev/tty
 DOMAIN=${DOMAIN:-beispiel.de}
 
 echo -en  "${GREEN}BASE_URL$NC (default: ${UNDERLINE}http://localhost:3000${NC}): "
-read BASE_URL
+read BASE_URL </dev/tty
 BASE_URL=${BASE_URL:-http://localhost:3000}
 
 echo -en "${GREEN}ADMIN_EMAIL$NC (default: ${UNDERLINE}admin@${DOMAIN}${NC}): "
-read ADMIN_EMAIL
+read ADMIN_EMAIL </dev/tty
 ADMIN_EMAIL=${ADMIN_EMAIL:-admin@${DOMAIN}}
 
 echo -en "${GREEN}ADMIN_FULLNAME$NC (default: ${UNDERLINE}Administrator${NC}): "
-read ADMIN_FULLNAME
+read ADMIN_FULLNAME </dev/tty
 ADMIN_FULLNAME=${ADMIN_FULLNAME:-Administrator}
 
 echo -en "${GREEN}SUPPORT_EMAIL_ADDRESS$NC (default: ${UNDERLINE}support.irrenanstalt@${DOMAIN}${NC}): "
-read SUPPORT_EMAIL_ADDRESS
+read SUPPORT_EMAIL_ADDRESS </dev/tty
 SUPPORT_EMAIL_ADDRESS=${SUPPORT_EMAIL_ADDRESS:-support.irrenanstalt@${DOMAIN}}
 
 echo -en "${GREEN}Configure SMTP$NC (${UNDERLINE}Y/n${NC}): "
-read CONFIGURE_SMTP
+read CONFIGURE_SMTP </dev/tty
 CONFIGURE_SMTP=${CONFIGURE_SMTP:-Y}
 
 if [[ "$CONFIGURE_SMTP" =~ ^[Yy]$ ]]; then
     echo -en "${GREEN}SMTP_HOST$NC (default: ${UNDERLINE}smtp.${DOMAIN}${NC}): "
-    read SMTP_HOST
+    read SMTP_HOST </dev/tty
     SMTP_HOST=${SMTP_HOST:-smtp.${DOMAIN}}
 
     echo -en "${GREEN}SMTP_PORT$NC (default: ${UNDERLINE}465${NC}): "
-    read SMTP_PORT
+    read SMTP_PORT </dev/tty
     SMTP_PORT=${SMTP_PORT:-465}
 
     echo -en "${GREEN}SMTP_USER$NC (default: ${UNDERLINE}automatic@${DOMAIN}${NC}): "
-    read SMTP_USER
+    read SMTP_USER </dev/tty
     SMTP_USER=${SMTP_USER:-automatic@${DOMAIN}}
 
     echo -en "${GREEN}SMTP_PASSWORD$NC: "
-    read SMTP_PASSWORD
+    read SMTP_PASSWORD </dev/tty
     SMTP_PASSWORD=${SMTP_PASSWORD:-}
 
     echo -en "${GREEN}SENDER_EMAIL_ADDRESS$NC (default: ${UNDERLINE}irrenanstalt@${DOMAIN}${NC}): "
-    read SENDER_EMAIL_ADDRESS
+    read SENDER_EMAIL_ADDRESS </dev/tty
     SENDER_EMAIL_ADDRESS=${SENDER_EMAIL_ADDRESS:-irrenanstalt@${DOMAIN}}
 fi
 
