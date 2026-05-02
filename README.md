@@ -9,7 +9,7 @@ Prerequisits:
 - [docker](https://docs.docker.com/engine/install/)
 - Works best on Linux ;-D
 ```bash
-git clone https://github.com/Benkralex/irrenanstalt-web # Clone repo
+git clone https://github.com/Benkralex/irrenanstalt-web.git # Clone repo
 cd irrenanstalt-web # Go into repo
 mv .env.example .env # Copy example-env to real-env
 ```
