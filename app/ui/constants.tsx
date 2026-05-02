@@ -46,13 +46,13 @@ export const HOVER_BORDER_COLOR_PRIMARY = `hover:border-(--light-color-primary) 
 
 // Button styles
 export const BUTTON = [
-    'transition-colors', 'duration-300', 'motion-reduce:transition-none', 'cursor-pointer', 'rounded-lg',
+    'opacity-80', 'hover:opacity-100', 'transition-colors', 'duration-300', 'motion-reduce:transition-none', 'cursor-pointer', 'rounded-lg',
     'p-2', 'pl-3 pr-3', 'h-10', 
     'text-sm', 'font-medium',
     'aria-disabled:cursor-not-allowed', 'aria-disabled:opacity-50',
 ].join(' ')
-export const PRIMARY_BUTTON = ["opacity-80", "hover:opacity-100", BG_COLOR_PRIMARY, TEXT_COLOR_ON_PRIMARY, BUTTON].join(' ');
-export const PRIMARY_CONTAINER_BUTTON = ["opacity-80", "hover:opacity-100", BG_COLOR_PRIMARY_CONTAINER, TEXT_COLOR_ON_PRIMARY_CONTAINER, BUTTON].join(' ');
+export const PRIMARY_BUTTON = [BG_COLOR_PRIMARY, TEXT_COLOR_ON_PRIMARY, BUTTON].join(' ');
+export const PRIMARY_CONTAINER_BUTTON = [BG_COLOR_PRIMARY_CONTAINER, TEXT_COLOR_ON_PRIMARY_CONTAINER, BUTTON].join(' ');
 
 // Other
 export const PLACEHOLDER_COLOR_SURFACE_VARIANT = `placeholder:text-(--light-color-on-surface-variant) dark:text-(--dark-color-on-surface-variant)`;

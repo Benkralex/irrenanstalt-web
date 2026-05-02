@@ -1,17 +1,15 @@
 'use server';
 
 import { z } from 'zod';
-import { auth, signIn, unstable_update } from '@/auth';
+import { signIn } from '@/auth';
 import { AuthError } from 'next-auth';
-import { redirect } from 'next/navigation';
 import { deleteInviteById, getInviteById } from '../database/invites';
-import { addUser, checkEmail, checkUsername, getExistingOTPSecret, hashPassword } from '../database/users';
+import { addUser, checkEmail, checkUsername, hashPassword } from '../database/users';
 import { getPasswordRequirementsMessage, getPasswordRequirementsRegex } from '../check-password-requirements';
-import { verifyOPTToken } from '../otp';
 
 type AuthenticateState = {
   errorMessage: string;
-  email: string;
+  username: string;
 };
 
 export async function authenticate(
@@ -19,28 +17,28 @@ export async function authenticate(
   formData: FormData,
 ) {
   const FormSchema = z.object({
-    email: z.email({ message: "Ungültige E-Mail-Adresse" }),
+    username: z.string({ message: "Benutzername ist erforderlich" }),
     password: z.string({ message: "Passwort ist erforderlich" }).min(1, { message: "Passwort ist leer" }),
   });
 
   try {
     const validatedFields = FormSchema.safeParse({
-      email: formData.get('email'),
+      username: formData.get('username'),
       password: formData.get('password'),
     });
 
     if (!validatedFields.success) {
       const errorMessages = validatedFields.error.issues.map(err => err.message).join('<br/>');
-      return { ...prevState, email: formData.get('email') as string, errorMessage: errorMessages };
+      return { ...prevState, username: formData.get('username') as string, errorMessage: errorMessages };
     }
     await signIn('credentials', formData);
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {
         case 'CredentialsSignin':
-          return { ...prevState, email: formData.get('email') as string, errorMessage: 'Falsche Anmeldedaten' };
+          return { ...prevState, username: formData.get('username') as string, errorMessage: 'Falsche Anmeldedaten' };
         default:
-          return { ...prevState, email: formData.get('email') as string, errorMessage: 'Etwas ist fehlgeschlagen' };
+          return { ...prevState, username: formData.get('username') as string, errorMessage: 'Etwas ist fehlgeschlagen' };
       }
     }
     throw error;

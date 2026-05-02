@@ -12,18 +12,18 @@ export default function LoginForm() {
     authenticate,
     undefined,
   );
-  const {errorMessage, email} = state || {};
+  const {errorMessage, username} = state || {};
 
   return (
     <form action={formAction}>
         <div>
           <input
             className={`peer block rounded-md border ${BORDER_COLOR_SURFACE_VARIANT} p-[9px] text-sm ${PLACEHOLDER_COLOR_SURFACE_VARIANT}`}
-            id="email"
-            type="email"
-            name="email"
-            placeholder="Email"
-            defaultValue={email}
+            id="username"
+            type="text"
+            name="username"
+            placeholder="Email oder Benutzername"
+            defaultValue={username}
             required
           />
         </div>

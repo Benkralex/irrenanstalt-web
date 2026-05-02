@@ -27,7 +27,7 @@ export default async function OTPPage({ searchParams }: OTPPageProps) {
   if (!checkEmailVerified) {
     redirect("/verify-email/verify");
   }
-  if (!session.user.otpRequired || session.user.otpLoggedIn) {
+  if (session.otpLoggedIn) {
     redirect(safeCallbackURL || "/");
   }
 

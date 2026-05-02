@@ -1,6 +1,6 @@
 "use server";
 import { auth, unstable_update } from "@/auth";
-import { getExistingOTPSecret, getOrCreateOTPSecret } from "../database/users";
+import { getExistingOTPSecret, getOrCreateOTPSecret, verifyOTP } from "../database/users";
 import { verifyOPTToken } from "../otp";
 import { redirect } from "next/navigation";
 
@@ -38,11 +38,10 @@ export async function checkOTP(
     return { ...prevState, message: 'OTP is invalid!' };
   }
 
+  await verifyOTP(userId);
+
   await unstable_update({
-    user: {
-      otpRequired: true,
-      otpLoggedIn: true,
-    },
+    otpLoggedIn: true,
   });
 
   redirect(callbackUrl);

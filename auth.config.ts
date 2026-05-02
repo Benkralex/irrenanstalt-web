@@ -1,14 +1,18 @@
 import type { NextAuthConfig } from 'next-auth';
 import { parseTags } from './app/lib/database/users';
-import type { User as AppUser } from './app/lib/database/definitions';
-
-type SafeUser = Omit<AppUser, 'password' | 'otpSecret'>;
-
-function sanitizeUser(user: AppUser | SafeUser): SafeUser {
-  const { password: _password, otpSecret: _otpSecret, ...safeUser } = user as AppUser;
-  return safeUser;
-}
+import type { User as AppUser, SessionType, SessionUser } from './app/lib/database/definitions';
  
+function isPublic(pathname: string) {
+  return ['/login', '/register', '/otp', '/terms-of-service'].includes(pathname) || 
+    (pathname.startsWith('/verify-email') && pathname !== '/verify-email/verify') ||
+    pathname.endsWith('.css');
+}
+
+function sanetizeUser(user: AppUser): SessionUser {
+  const { password, otpSecret, emailVerified, otpVerified, ...sanetizedUser } = user;
+  return sanetizedUser;
+}
+
 export const authConfig = {
   pages: {
     signIn: '/login',
@@ -16,58 +20,48 @@ export const authConfig = {
   },
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
-      if (nextUrl.pathname.endsWith('.css')) {
+      // Public pages
+      if (isPublic(nextUrl.pathname)) {
         return true;
       }
-      if (
-        nextUrl.pathname === '/login' || 
-        nextUrl.pathname === '/register' || 
-        nextUrl.pathname === '/otp' ||
-        nextUrl.pathname === '/terms-of-service' || 
-        (
-          nextUrl.pathname !== '/verify-email/verify' && 
-          nextUrl.pathname.startsWith('/verify-email')
-        )
-      ) {
-        return true;
-      }
+      // Email verification page
       if (nextUrl.pathname.startsWith('/verify-email')) {
         return !!auth?.user;
       }
-      const otpRequired = !!auth?.user?.otpRequired && auth?.user?.otpVerified;
-      const otpLoggedIn = !!auth?.user?.otpLoggedIn;
-      if (otpRequired && !otpLoggedIn) {
+      // OTP verification
+      const otpLoggedIn = !!auth?.otpLoggedIn;
+      if (!otpLoggedIn) {
         const callbackUrl = `${nextUrl.pathname}${nextUrl.search}`;
         const otpUrl = new URL('/otp', nextUrl);
         otpUrl.searchParams.set('callbackUrl', callbackUrl);
         return Response.redirect(otpUrl);
       }
+      // Email verification
       if (auth?.user?.emailVerified === false) {
         return false;
       }
+      // Admin
       if (nextUrl.pathname.startsWith('/admin')) {
         return parseTags(auth?.user?.tags || '').includes('admin');
       }
+      // Default: require authentication
       const isLoggedIn = !!auth?.user;
       return isLoggedIn;
     },
     jwt({ token, user, trigger, session }) {
       if (user) {
-        token.user = sanitizeUser(user as AppUser);
-        token.otpRequired = !!(user as AppUser).otpSecret;
-        token.otpVerified = !token.otpRequired;
+        token.user = sanetizeUser(user as AppUser);
+        const otpVerified = !!(user as AppUser).otpVerified && !!(user as AppUser).otpSecret;
+        token.otpLoggedIn = !otpVerified;
       }
 
-      if (trigger === 'update' && session?.user) {
+      if (trigger === 'update') {
         token.user = {
-          ...(token.user as SafeUser | undefined),
+          ...(token.user as SessionUser | undefined),
           ...session.user,
         };
-        if (typeof session.user.otpRequired === 'boolean') {
-          token.otpRequired = session.user.otpRequired;
-        }
-        if (typeof session.user.otpVerified === 'boolean') {
-          token.otpVerified = session.user.otpVerified;
+        if (typeof session.otpLoggedIn === 'boolean') {
+          token.otpLoggedIn = session.otpLoggedIn;
         }
       }
 
@@ -77,8 +71,7 @@ export const authConfig = {
       if (token.user) {
         session.user = token.user as typeof session.user;
       }
-      session.user.otpRequired = !!token.otpRequired;
-      session.user.otpLoggedIn = !!token.otpVerified;
+      session.otpLoggedIn = !!token.otpLoggedIn;
       return session;
     },
   },

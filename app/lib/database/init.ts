@@ -72,6 +72,7 @@ export async function createAdminUser() {
         fullname: process.env.ADMIN_FULLNAME || "Administrator",
         email: process.env.ADMIN_EMAIL,
         password: hashedPassword,
+        tags: "admin",
       }
     });
   }

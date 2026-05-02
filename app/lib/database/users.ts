@@ -122,3 +122,11 @@ export async function verifyOTP(userId: string): Promise<boolean> {
   });
   return user.otpVerified;
 }
+
+export async function isOTPVerified(userId: string): Promise<boolean> {
+  const user = await prisma.users.findUnique({
+    where: { id: userId },
+    select: { otpVerified: true },
+  });
+  return user?.otpVerified ?? false;
+}
